@@ -2,14 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.adrian.movieapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".MovieApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Androidmovieapp">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.Androidmovieapp"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".presentation.movielist.activity.MovieListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
