@@ -1,0 +1,14 @@
+ext {
+    internalLibraries = [
+            abstraction: ":abstraction",
+            testUtil: ":test_util"
+    ]
+    features = [
+            home: ":features:home",
+            search: ":features:search",
+            favourites: ":features:favourites"
+    ]
+    app = [
+            movieapp: ":app"
+    ]
+}
