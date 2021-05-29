@@ -1,2 +1,5 @@
 include ':app'
+include ':test_util'
+include ':abstraction'
+include ':features:home', ':features:search', ':features:favourites'
 rootProject.name = "android-movieapp"

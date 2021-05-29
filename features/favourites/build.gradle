@@ -1,0 +1,7 @@
+apply plugin: 'com.android.library'
+apply from: "$rootProject.projectDir/buildconfig/module/common-module.gradle"
+
+dependencies {
+    implementation project(rootProject.ext.internalLibraries.abstraction)
+    implementation project(rootProject.ext.internalLibraries.testUtil)
+}

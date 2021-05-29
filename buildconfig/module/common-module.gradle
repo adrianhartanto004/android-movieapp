@@ -1,0 +1,100 @@
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: "androidx.navigation.safeargs"
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        buildConfigField "String", "BASE_URL", rootProject.ext.BASE_URL
+        buildConfigField "String", "API_KEY", rootProject.ext.API_KEY
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation rootProject.ext.supportLibDependencies.appCompact
+    implementation rootProject.ext.supportLibDependencies.activityktx
+    implementation rootProject.ext.supportLibDependencies.fragmentktx
+    implementation rootProject.ext.supportLibDependencies.constraintLayout
+    implementation rootProject.ext.supportLibDependencies.swipeRefreshLayout
+    implementation rootProject.ext.supportLibDependencies.googleMaterialDesign
+
+    //View Model
+    implementation rootProject.ext.viewModelLiveDataDependencies.lifeCycleExtensions
+    implementation rootProject.ext.viewModelLiveDataDependencies.liveData
+    implementation rootProject.ext.viewModelLiveDataDependencies.viewModel
+    implementation rootProject.ext.viewModelLiveDataDependencies.lifeCycleRuntime
+    implementation rootProject.ext.viewModelLiveDataDependencies.lifeCycleCompiler
+
+    //moshi
+    implementation rootProject.ext.networkDependencies.moshiKotlin
+    kapt rootProject.ext.networkDependencies.moshiCodegen
+
+    //RecyclerView
+    implementation rootProject.ext.supportLibDependencies.recyclerView
+
+    //Glide
+    implementation rootProject.ext.networkDependencies.glide
+    annotationProcessor rootProject.ext.networkDependencies.glideCompiler
+
+    //Dagger Hilt
+    implementation rootProject.ext.daggerHiltDependencies.daggerHiltAndroid
+    kapt rootProject.ext.daggerHiltDependencies.daggerHiltAndroidCompiler
+    implementation rootProject.ext.daggerHiltDependencies.daggerHiltViewModel
+    kapt rootProject.ext.daggerHiltDependencies.daggerHiltCompiler
+
+    //retrofit
+    implementation rootProject.ext.networkDependencies.retrofit
+    implementation rootProject.ext.networkDependencies.retrofitMoshiConverter
+
+    //navigation
+    implementation rootProject.ext.navigationComponents.navigationFragment
+    implementation rootProject.ext.navigationComponents.navigationUi
+
+    //Test Dependencies
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0'
+    testImplementation "io.mockk:mockk:1.11.0"
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.7.1"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation "org.assertj:assertj-core:3.19.0"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.3.0"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "androidx.test.espresso:espresso-idling-resource:3.3.0"
+    implementation "androidx.test.espresso:espresso-contrib:3.3.0"
+
+    //chuck
+    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+}

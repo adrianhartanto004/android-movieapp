@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">@color/outer_space</color>
+    <color name="colorPrimaryDark">@color/shark</color>
+    <color name="colorAccent">@color/red_orange</color>
+
+    <color name="outer_space">#2B2E30</color>
+    <color name="shark">#1A1E21</color>
+    <color name="mine_shaft">#3D3D3D</color>
+    <color name="red_orange">#FB3430</color>
 </resources>
