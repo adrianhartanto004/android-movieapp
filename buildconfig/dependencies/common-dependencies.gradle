@@ -7,7 +7,7 @@ ext {
     versionName = "1.0"
 
     BASE_URL = "\"https://api.themoviedb.org/3/\""
-    API_KEY = "7cc18fb1825507e7ea16fafe18153632"
+    API_KEY = "\"7cc18fb1825507e7ea16fafe18153632\""
 
     networkDependencies = [
             retrofit              : "com.squareup.retrofit2:retrofit:${retrofit_version}",
@@ -39,7 +39,8 @@ ext {
             lifeCycleExtensions: "androidx.lifecycle:lifecycle-extensions:${lifecycle_version}",
             liveData           : "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycle_version}",
             viewModel          : "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}",
-            lifeCycleRuntime   : "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_version}"
+            lifeCycleRuntime   : "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_version}",
+            lifeCycleCompiler  : "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     ]
 
     daggerHiltDependencies = [
@@ -47,6 +48,11 @@ ext {
             daggerHiltAndroidCompiler: "com.google.dagger:hilt-android-compiler:${hilt_version}",
             daggerHiltViewModel      : "androidx.hilt:hilt-lifecycle-viewmodel:${hilt_android_version}",
             daggerHiltCompiler       : "androidx.hilt:hilt-compiler:${hilt_android_version}"
+    ]
+
+    navigationComponents = [
+            navigationFragment: "androidx.navigation:navigation-fragment-ktx:$nav_version",
+            navigationUi      : "androidx.navigation:navigation-ui-ktx:$nav_version"
     ]
 
     multithreadingDependencies = [
