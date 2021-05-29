@@ -20,7 +20,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - uses: actions/cache@v2
         with:
           path: ~/.gradle
