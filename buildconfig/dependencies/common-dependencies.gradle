@@ -8,6 +8,7 @@ ext {
 
     BASE_URL = "\"https://api.themoviedb.org/3/\""
     API_KEY = "\"7cc18fb1825507e7ea16fafe18153632\""
+    BASE_IMAGE_URL = "\"https://image.tmdb.org/t/p/w500/\""
 
     networkDependencies = [
             retrofit              : "com.squareup.retrofit2:retrofit:${retrofit_version}",

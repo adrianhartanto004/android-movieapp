@@ -69,6 +69,11 @@ dependencies {
     implementation rootProject.ext.navigationComponents.navigationFragment
     implementation rootProject.ext.navigationComponents.navigationUi
 
+    //room
+    implementation rootProject.ext.roomDependencies.roomRuntime
+    kapt rootProject.ext.roomDependencies.roomCompiler
+    implementation rootProject.ext.roomDependencies.roomExtension
+
     implementation project(rootProject.ext.internalLibraries.abstraction)
     implementation project(rootProject.ext.features.home)
     implementation project(rootProject.ext.features.search)
