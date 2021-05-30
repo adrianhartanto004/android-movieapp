@@ -1,13 +1,13 @@
 package com.adrian.abstraction.common.state
 
-sealed class Result<out T> {
-    data class Success<T>(val data: T?) : Result<T>()
-    data class Error(val e: Throwable) : Result<Nothing>()
+sealed class UseCaseResult<out T> {
+    data class Success<T>(val data: T) : UseCaseResult<T>()
+    data class Error(val e: Throwable) : UseCaseResult<Nothing>()
 }
 
-infix fun <T> Result<T>.onSuccess(onSuccess: Result.Success<T>.() -> Unit): Result<T> {
+infix fun <T> UseCaseResult<T>.onSuccess(onSuccess: UseCaseResult.Success<T>.() -> Unit): UseCaseResult<T> {
     return when (this) {
-        is Result.Success -> {
+        is UseCaseResult.Success -> {
             onSuccess(this)
             this
         }
@@ -15,9 +15,9 @@ infix fun <T> Result<T>.onSuccess(onSuccess: Result.Success<T>.() -> Unit): Resu
     }
 }
 
-infix fun <T> Result<T>.onError(onError: Result.Error.() -> Unit): Result<T> {
+infix fun <T> UseCaseResult<T>.onError(onError: UseCaseResult.Error.() -> Unit): UseCaseResult<T> {
     return when (this) {
-        is Result.Error -> {
+        is UseCaseResult.Error -> {
             onError(this)
             this
         }

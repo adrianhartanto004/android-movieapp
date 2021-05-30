@@ -17,11 +17,11 @@ abstract class ActivityModule {
 
     @ActivityScoped
     @Binds
-    abstract fun navManager(navManagerImpl: NavManagerImpl): NavManager
+    abstract fun bindsNavManager(navManagerImpl: NavManagerImpl): NavManager
 
     companion object {
         @Provides
-        fun appCompatActivity(activity: Activity) = activity as AppCompatActivity
+        fun provideAppCompatActivity(activity: Activity) = activity as AppCompatActivity
     }
 
 }

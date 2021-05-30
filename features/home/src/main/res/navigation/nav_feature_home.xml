@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/fragment_home"
-        android:name="com.adrian.home.presentation.fragment.HomeFragment">
+        android:name="com.adrian.home.presentation.home.fragment.HomeFragment">
     </fragment>
 </navigation>

@@ -14,6 +14,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         buildConfigField "String", "BASE_URL", rootProject.ext.BASE_URL
+        buildConfigField "String", "BASE_IMAGE_URL", rootProject.ext.BASE_IMAGE_URL
         buildConfigField "String", "API_KEY", rootProject.ext.API_KEY
         multiDexEnabled true
 
@@ -36,6 +37,9 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    kapt {
+        generateStubs = true
     }
 }
 
@@ -65,7 +69,7 @@ dependencies {
 
     //Glide
     implementation rootProject.ext.networkDependencies.glide
-    annotationProcessor rootProject.ext.networkDependencies.glideCompiler
+    kapt rootProject.ext.networkDependencies.glideCompiler
 
     //Dagger Hilt
     implementation rootProject.ext.daggerHiltDependencies.daggerHiltAndroid
@@ -76,6 +80,11 @@ dependencies {
     //retrofit
     implementation rootProject.ext.networkDependencies.retrofit
     implementation rootProject.ext.networkDependencies.retrofitMoshiConverter
+
+    //room
+    implementation rootProject.ext.roomDependencies.roomRuntime
+    kapt rootProject.ext.roomDependencies.roomCompiler
+    implementation rootProject.ext.roomDependencies.roomExtension
 
     //navigation
     implementation rootProject.ext.navigationComponents.navigationFragment
