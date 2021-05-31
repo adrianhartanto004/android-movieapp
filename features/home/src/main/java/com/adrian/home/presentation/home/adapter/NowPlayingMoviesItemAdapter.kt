@@ -5,12 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.adrian.abstraction.extension.loadImageUrl
 import com.adrian.home.databinding.HolderNowPlayingMoviesItemBinding
+import com.adrian.home.domain.model.genre.Genre
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
 
 internal class NowPlayingMoviesItemAdapter :
     RecyclerView.Adapter<NowPlayingMoviesItemAdapter.ViewHolder>() {
 
     private var nowPlayingMovies = listOf<NowPlayingMovies>()
+
+    private var genres = listOf<Genre>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val holder = ViewHolder(
@@ -30,12 +33,25 @@ internal class NowPlayingMoviesItemAdapter :
         holder.binding.apply {
             ivPoster.loadImageUrl(currentList.posterPath)
             tvTitle.text = currentList.title
-            tvGenre.text
+            val genreNames = arrayListOf<String>()
+            for (currentGenreId in currentList.genreIds) {
+                for (genre in genres) {
+                    if (genre.id == currentGenreId) {
+                        genreNames.add(genre.name)
+                    }
+                }
+            }
+            tvGenre.text = genreNames.joinToString(", ")
         }
     }
 
     fun submitList(popularMovies: List<NowPlayingMovies>) {
         this.nowPlayingMovies = popularMovies
+        notifyDataSetChanged()
+    }
+
+    fun setGenres(genres: List<Genre>) {
+        this.genres = genres
         notifyDataSetChanged()
     }
 

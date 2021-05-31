@@ -59,7 +59,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val genresObserver = Observer<UIState<List<Genre>>> { state ->
         state onSuccess {
-            //logic here
+            nowPlayingMoviesItemAdapter.setGenres(data)
         }
         state onFailure {
         }
