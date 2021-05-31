@@ -1,5 +1,6 @@
 package com.adrian.home.data.network.service
 
+import com.adrian.home.data.network.model.genre.GenreListJson
 import com.adrian.home.data.network.model.nowplayingmovies.NowPlayingMoviesListJson
 import com.adrian.home.data.network.model.popularmovies.PopularMovieListJson
 import retrofit2.http.GET
@@ -11,4 +12,8 @@ interface HomeRetrofitService {
 
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(@Query("page") page: Int): NowPlayingMoviesListJson
+
+    @GET("genre/movie/list")
+    suspend fun getGenres(): GenreListJson
+
 }

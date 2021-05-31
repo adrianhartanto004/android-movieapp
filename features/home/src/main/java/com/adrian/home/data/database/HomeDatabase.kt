@@ -2,12 +2,14 @@ package com.adrian.home.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.adrian.home.data.database.model.genre.GenreEntity
 import com.adrian.home.data.database.model.nowplayingmovies.NowPlayingMoviesEntity
 import com.adrian.home.data.database.model.popularmovies.PopularMoviesEntity
 
 @Database(
     entities = [PopularMoviesEntity::class,
-        NowPlayingMoviesEntity::class], version = 1, exportSchema = false
+        NowPlayingMoviesEntity::class,
+        GenreEntity::class], version = 1, exportSchema = false
 )
 abstract class HomeDatabase : RoomDatabase() {
 

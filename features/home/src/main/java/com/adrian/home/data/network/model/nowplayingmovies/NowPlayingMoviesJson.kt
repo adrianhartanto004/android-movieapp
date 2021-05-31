@@ -10,6 +10,8 @@ data class NowPlayingMoviesJson(
     val adult: Boolean,
     @Json(name = "backdrop_path")
     val backdropPath: String,
+    @Json(name = "genre_ids")
+    val genreIds: List<Int>,
     val id: Int,
     @Json(name = "original_language")
     val originalLanguage: String,
@@ -33,6 +35,7 @@ internal fun NowPlayingMoviesJson.toEntity() =
     NowPlayingMoviesEntity(
         adult,
         backdropPath,
+        genreIds,
         id,
         originalLanguage,
         originalTitle,
@@ -50,6 +53,7 @@ internal fun NowPlayingMoviesJson.toDomainModel() =
     NowPlayingMovies(
         adult,
         backdropPath,
+        genreIds,
         id,
         originalLanguage,
         originalTitle,

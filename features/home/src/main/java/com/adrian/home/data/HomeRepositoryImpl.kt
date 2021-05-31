@@ -3,13 +3,17 @@ package com.adrian.home.data
 import com.adrian.abstraction.common.state.ApiResult
 import com.adrian.abstraction.extension.safeApiCall
 import com.adrian.home.data.database.HomeDao
+import com.adrian.home.data.database.model.genre.toDomainModel
 import com.adrian.home.data.database.model.nowplayingmovies.toDomainModel
 import com.adrian.home.data.database.model.popularmovies.toDomainModel
+import com.adrian.home.data.network.model.genre.toDomainModel
+import com.adrian.home.data.network.model.genre.toEntity
 import com.adrian.home.data.network.model.nowplayingmovies.toDomainModel
 import com.adrian.home.data.network.model.nowplayingmovies.toEntity
 import com.adrian.home.data.network.model.popularmovies.toDomainModel
 import com.adrian.home.data.network.model.popularmovies.toEntity
 import com.adrian.home.data.network.service.HomeRetrofitService
+import com.adrian.home.domain.model.genre.Genre
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 import com.adrian.home.domain.model.popularmovies.PopularMoviesList
 import com.adrian.home.domain.repository.HomeRepository
@@ -65,6 +69,35 @@ class HomeRepositoryImpl(
             }
         } catch (e: IOException) {
             return homeDao.getAllNowPlayingMovies().toDomainModel()
+        }
+    }
+
+    override suspend fun getGenres(): List<Genre> {
+        try {
+            if (homeDao.getAllGenres().isNotEmpty()) {
+                return homeDao.getAllGenres().map { it.toDomainModel() }
+            } else {
+                return when (
+                    val response =
+                        safeApiCall(Dispatchers.IO) { homeRetrofitService.getGenres() }) {
+                    is ApiResult.Success -> {
+                        val genres = response.value.genres
+                        genres
+                            .map { it.toEntity() }
+                            .let { homeDao.addGenres(it) }
+
+                        genres.map { it.toDomainModel() }
+                    }
+                    is ApiResult.GenericError -> {
+                        return homeDao.getAllGenres().map { it.toDomainModel() }
+                    }
+                    is ApiResult.NetworkError -> {
+                        return homeDao.getAllGenres().map { it.toDomainModel() }
+                    }
+                }
+            }
+        } catch (e: IOException) {
+            return homeDao.getAllGenres().map { it.toDomainModel() }
         }
     }
 }

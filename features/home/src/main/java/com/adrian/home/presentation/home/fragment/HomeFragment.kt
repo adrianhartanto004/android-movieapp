@@ -16,6 +16,7 @@ import com.adrian.abstraction.extension.showLongToast
 import com.adrian.abstraction.presentation.fragment.BaseFragment
 import com.adrian.home.R
 import com.adrian.home.databinding.FragmentHomeBinding
+import com.adrian.home.domain.model.genre.Genre
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.presentation.home.adapter.NowPlayingMoviesAdapter
@@ -56,6 +57,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
     }
 
+    private val genresObserver = Observer<UIState<List<Genre>>> { state ->
+        state onSuccess {
+            //logic here
+        }
+        state onFailure {
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,6 +98,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         observe(viewModel.popularMoviesLiveData, popularMoviesObserver)
         observe(viewModel.nowPlayingMoviesLiveData, nowPlayingMoviesObserver)
+        observe(viewModel.genresLiveData, genresObserver)
         viewModel.loadData()
     }
 }
