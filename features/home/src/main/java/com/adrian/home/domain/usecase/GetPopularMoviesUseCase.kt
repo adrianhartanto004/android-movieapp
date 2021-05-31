@@ -1,7 +1,7 @@
 package com.adrian.home.domain.usecase
 
 import com.adrian.abstraction.common.state.UseCaseResult
-import com.adrian.home.domain.model.PopularMoviesList
+import com.adrian.home.domain.model.popularmovies.PopularMoviesList
 import com.adrian.home.domain.repository.HomeRepository
 import java.io.IOException
 import javax.inject.Inject

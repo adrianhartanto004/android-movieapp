@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="NOW PLAYING"
+        android:text="NEW"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,5 +36,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tools:itemCount="6"
-        tools:listitem="@layout/holder_now_playing_movies_item" />
+        tools:listitem="@layout/holder_popular_movies_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

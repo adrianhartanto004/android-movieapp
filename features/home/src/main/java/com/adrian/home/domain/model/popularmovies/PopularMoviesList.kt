@@ -1,4 +1,4 @@
-package com.adrian.home.domain.model
+package com.adrian.home.domain.model.popularmovies
 
 data class PopularMoviesList(
     val page: Int,

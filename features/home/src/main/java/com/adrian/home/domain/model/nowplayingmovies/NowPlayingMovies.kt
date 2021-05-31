@@ -1,6 +1,6 @@
-package com.adrian.home.domain.model
+package com.adrian.home.domain.model.nowplayingmovies
 
-data class PopularMovies(
+data class NowPlayingMovies(
     val adult: Boolean,
     val backdropPath: String,
     val id: Int,

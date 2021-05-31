@@ -1,12 +1,12 @@
-package com.adrian.home.data.database.model.popularmovies
+package com.adrian.home.data.database.model.nowplayingmovies
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.adrian.home.domain.model.popularmovies.PopularMovies
-import com.adrian.home.domain.model.popularmovies.PopularMoviesList
+import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
+import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 
-@Entity(tableName = "popularMovies")
-data class PopularMoviesEntity(
+@Entity(tableName = "nowPlayingMovies")
+data class NowPlayingMoviesEntity(
     val adult: Boolean,
     val backdropPath: String,
     @PrimaryKey(autoGenerate = false) val id: Int,
@@ -22,8 +22,8 @@ data class PopularMoviesEntity(
     val voteCount: Int
 )
 
-internal fun PopularMoviesEntity.toDomainModel() =
-    PopularMovies(
+internal fun NowPlayingMoviesEntity.toDomainModel() =
+    NowPlayingMovies(
         adult,
         backdropPath,
         id,
@@ -39,8 +39,8 @@ internal fun PopularMoviesEntity.toDomainModel() =
         voteCount
     )
 
-internal fun List<PopularMoviesEntity>.toDomainModel() =
-    PopularMoviesList(
+internal fun List<NowPlayingMoviesEntity>.toDomainModel() =
+    NowPlayingMoviesList(
         1,
         this.map { it.toDomainModel() },
         1,

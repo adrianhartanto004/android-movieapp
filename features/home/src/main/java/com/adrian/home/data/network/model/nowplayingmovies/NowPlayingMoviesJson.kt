@@ -1,12 +1,12 @@
-package com.adrian.home.data.network.model.popularmovies
+package com.adrian.home.data.network.model.nowplayingmovies
 
-import com.adrian.home.data.database.model.popularmovies.PopularMoviesEntity
-import com.adrian.home.domain.model.popularmovies.PopularMovies
+import com.adrian.home.data.database.model.nowplayingmovies.NowPlayingMoviesEntity
+import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PopularMoviesJson(
+data class NowPlayingMoviesJson(
     val adult: Boolean,
     @Json(name = "backdrop_path")
     val backdropPath: String,
@@ -29,8 +29,8 @@ data class PopularMoviesJson(
     val voteCount: Int
 )
 
-internal fun PopularMoviesJson.toEntity() =
-    PopularMoviesEntity(
+internal fun NowPlayingMoviesJson.toEntity() =
+    NowPlayingMoviesEntity(
         adult,
         backdropPath,
         id,
@@ -46,8 +46,8 @@ internal fun PopularMoviesJson.toEntity() =
         voteCount
     )
 
-internal fun PopularMoviesJson.toDomainModel() =
-    PopularMovies(
+internal fun NowPlayingMoviesJson.toDomainModel() =
+    NowPlayingMovies(
         adult,
         backdropPath,
         id,
