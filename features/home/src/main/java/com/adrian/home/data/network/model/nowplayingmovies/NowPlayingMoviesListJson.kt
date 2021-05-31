@@ -1,20 +1,20 @@
-package com.adrian.home.data.network.model.popularmovies
+package com.adrian.home.data.network.model.nowplayingmovies
 
-import com.adrian.home.domain.model.popularmovies.PopularMoviesList
+import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PopularMovieListJson(
+data class NowPlayingMoviesListJson(
     val page: Int,
     @Json(name = "results")
-    val results: List<PopularMoviesJson>,
+    val results: List<NowPlayingMoviesJson>,
     @Json(name = "total_pages")
     val totalPages: Int,
     @Json(name = "total_results")
     val totalResults: Int
 )
 
-internal fun PopularMovieListJson.toDomainModel() = PopularMoviesList(
+internal fun NowPlayingMoviesListJson.toDomainModel() = NowPlayingMoviesList(
     page, results.map { it.toDomainModel() }, totalPages, totalResults
 )

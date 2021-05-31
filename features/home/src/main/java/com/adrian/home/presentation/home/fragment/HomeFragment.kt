@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ConcatAdapter
@@ -13,10 +12,15 @@ import com.adrian.abstraction.common.state.UIState
 import com.adrian.abstraction.common.state.onFailure
 import com.adrian.abstraction.common.state.onSuccess
 import com.adrian.abstraction.extension.observe
+import com.adrian.abstraction.extension.showLongToast
 import com.adrian.abstraction.presentation.fragment.BaseFragment
 import com.adrian.home.R
 import com.adrian.home.databinding.FragmentHomeBinding
-import com.adrian.home.domain.model.PopularMovies
+import com.adrian.home.domain.model.genre.Genre
+import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
+import com.adrian.home.domain.model.popularmovies.PopularMovies
+import com.adrian.home.presentation.home.adapter.NowPlayingMoviesAdapter
+import com.adrian.home.presentation.home.adapter.NowPlayingMoviesItemAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesItemAdapter
 import com.adrian.home.presentation.home.viewmodel.HomeViewModel
@@ -31,6 +35,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private lateinit var popularMoviesAdapter: PopularMoviesAdapter
     private lateinit var popularMoviesItemAdapter: PopularMoviesItemAdapter
+    private lateinit var nowPlayingMoviesAdapter: NowPlayingMoviesAdapter
+    private lateinit var nowPlayingMoviesItemAdapter: NowPlayingMoviesItemAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     private val popularMoviesObserver = Observer<UIState<List<PopularMovies>>> { state ->
@@ -38,7 +44,24 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             popularMoviesItemAdapter.submitList(data)
         }
         state onFailure {
-            Toast.makeText(requireContext().applicationContext, message, Toast.LENGTH_LONG).show()
+            showLongToast(message)
+        }
+    }
+
+    private val nowPlayingMoviesObserver = Observer<UIState<List<NowPlayingMovies>>> { state ->
+        state onSuccess {
+            nowPlayingMoviesItemAdapter.submitList(data)
+        }
+        state onFailure {
+            showLongToast(message)
+        }
+    }
+
+    private val genresObserver = Observer<UIState<List<Genre>>> { state ->
+        state onSuccess {
+            nowPlayingMoviesItemAdapter.setGenres(data)
+        }
+        state onFailure {
         }
     }
 
@@ -60,8 +83,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private fun init() {
         popularMoviesItemAdapter = PopularMoviesItemAdapter()
         popularMoviesAdapter = PopularMoviesAdapter(popularMoviesItemAdapter)
+
+        nowPlayingMoviesItemAdapter = NowPlayingMoviesItemAdapter()
+        nowPlayingMoviesAdapter = NowPlayingMoviesAdapter(nowPlayingMoviesItemAdapter)
+
         concatAdapter = ConcatAdapter(
-            popularMoviesAdapter
+            popularMoviesAdapter,
+            nowPlayingMoviesAdapter
         )
         binding.apply {
             rvConcat.layoutManager = LinearLayoutManager(context)
@@ -69,6 +97,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
 
         observe(viewModel.popularMoviesLiveData, popularMoviesObserver)
-        viewModel.getPopularMovies(1)
+        observe(viewModel.nowPlayingMoviesLiveData, nowPlayingMoviesObserver)
+        observe(viewModel.genresLiveData, genresObserver)
+        viewModel.loadData()
     }
 }

@@ -2,8 +2,8 @@ package com.adrian.home.data.database.model.popularmovies
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.adrian.home.domain.model.PopularMovies
-import com.adrian.home.domain.model.PopularMoviesList
+import com.adrian.home.domain.model.popularmovies.PopularMovies
+import com.adrian.home.domain.model.popularmovies.PopularMoviesList
 
 @Entity(tableName = "popularMovies")
 data class PopularMoviesEntity(

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.adrian.abstraction.extension.loadImageUrl
 import com.adrian.home.databinding.HolderPopularMoviesItemBinding
-import com.adrian.home.domain.model.PopularMovies
+import com.adrian.home.domain.model.popularmovies.PopularMovies
 
 internal class PopularMoviesItemAdapter :
     RecyclerView.Adapter<PopularMoviesItemAdapter.ViewHolder>() {
