@@ -12,6 +12,8 @@ internal class PopularMoviesItemAdapter :
 
     private var popularMovies = listOf<PopularMovies>()
 
+    private var onClickListener: ((popularMovies: PopularMovies) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val holder = ViewHolder(
             HolderPopularMoviesItemBinding.inflate(
@@ -42,11 +44,16 @@ internal class PopularMoviesItemAdapter :
             }
             tvVoteCount.text = voteCountText
         }
+        holder.itemView.setOnClickListener { onClickListener?.invoke(currentList) }
     }
 
     fun submitList(popularMovies: List<PopularMovies>) {
         this.popularMovies = popularMovies
         notifyDataSetChanged()
+    }
+
+    fun setOnItemClickedListener(listener: (popularMovies: PopularMovies) -> Unit) {
+        this.onClickListener = listener
     }
 
     internal inner class ViewHolder(val binding: HolderPopularMoviesItemBinding) :

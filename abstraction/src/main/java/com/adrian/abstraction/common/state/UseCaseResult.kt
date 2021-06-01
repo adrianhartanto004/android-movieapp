@@ -1,7 +1,7 @@
 package com.adrian.abstraction.common.state
 
 sealed class UseCaseResult<out T> {
-    data class Success<T>(val data: T) : UseCaseResult<T>()
+    data class Success<T>(val data: T?) : UseCaseResult<T>()
     data class Error(val e: Throwable) : UseCaseResult<Nothing>()
 }
 
