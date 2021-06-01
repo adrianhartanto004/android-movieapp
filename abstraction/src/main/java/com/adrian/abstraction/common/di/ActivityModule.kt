@@ -15,10 +15,6 @@ import dagger.hilt.android.scopes.ActivityScoped
 @InstallIn(ActivityComponent::class)
 abstract class ActivityModule {
 
-    @ActivityScoped
-    @Binds
-    abstract fun bindsNavManager(navManagerImpl: NavManagerImpl): NavManager
-
     companion object {
         @Provides
         fun provideAppCompatActivity(activity: Activity) = activity as AppCompatActivity
