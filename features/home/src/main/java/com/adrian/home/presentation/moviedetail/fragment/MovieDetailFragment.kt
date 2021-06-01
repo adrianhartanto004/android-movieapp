@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ConcatAdapter
@@ -20,6 +21,7 @@ import com.adrian.home.databinding.FragmentMovieDetailBinding
 import com.adrian.home.presentation.moviedetail.adapter.MovieDetailStorylineAdapter
 import com.adrian.home.presentation.moviedetail.viewmodel.MovieDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail) {
@@ -52,6 +54,7 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setToolbar(binding.toolbar)
         init()
     }
 

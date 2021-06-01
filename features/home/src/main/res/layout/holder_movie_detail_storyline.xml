@@ -19,12 +19,14 @@
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
         android:textAllCaps="true"
         android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_poster"
         app:layout_constraintTop_toTopOf="@+id/iv_poster"
         tools:text="Avengers: Infinity War" />
