@@ -6,6 +6,7 @@ import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
 import com.adrian.home.data.network.model.nowplayingmovies.NowPlayingMoviesListJson
 import com.adrian.home.data.network.model.popularmovies.PopularMovieListJson
+import com.adrian.home.data.network.model.recommendedmovies.RecommendedMoviesListJson
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -28,5 +29,11 @@ interface HomeRetrofitService {
 
     @GET("movie/{movieId}/images")
     suspend fun getMoviePhotos(@Path("movieId") movieId: Int): MoviesPhotoListJson
+
+    @GET("movie/{movieId}/recommendations")
+    suspend fun getRecommendedMovies(
+        @Path("movieId") movieId: Int,
+        @Query("page") page: Int
+    ): RecommendedMoviesListJson
 
 }

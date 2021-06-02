@@ -13,10 +13,11 @@ import com.adrian.home.R
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.data.network.model.moviephoto.Backdrop
-import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
+import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
 import com.adrian.home.domain.usecase.GetMovieCreditsUseCase
 import com.adrian.home.domain.usecase.GetMovieDetailUseCase
 import com.adrian.home.domain.usecase.GetMoviePhotosUseCase
+import com.adrian.home.domain.usecase.GetRecommendedMoviesUseCase
 import com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,16 +29,18 @@ class MovieDetailViewModel @Inject constructor(
     private val application: Application,
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
-    private val getMoviePhotosUseCase: GetMoviePhotosUseCase
+    private val getMoviePhotosUseCase: GetMoviePhotosUseCase,
+    private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase
 ) : BaseViewModel(savedStateHandle) {
 
     val movieDetailLiveData: MutableLiveData<UIState<MovieDetailResponseJson>> = MutableLiveData()
     val movieCreditsLiveData: MutableLiveData<UIState<MovieCreditListJson>> = MutableLiveData()
     val moviePhotosLiveData: MutableLiveData<UIState<List<Backdrop>>> = MutableLiveData()
+    val recommendedMoviesLiveData: MutableLiveData<UIState<List<RecommendedMovies>>> = MutableLiveData()
 
     private val args: MovieDetailFragmentArgs by navArgs()
 
-    fun getMovieDetail() {
+    private fun getMovieDetail() {
         viewModelScope.launch {
             getMovieDetailUseCase.getMovieDetail(args.movieId).also { resultState ->
                 movieDetailLiveData.value = UIState.Loading
@@ -55,7 +58,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    fun getMovieCredits() {
+    private fun getMovieCredits() {
         viewModelScope.launch {
             getMovieCreditsUseCase.getMovieCredits(args.movieId).also { resultState ->
                 movieCreditsLiveData.value = UIState.Loading
@@ -73,7 +76,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    fun getMoviePhotos() {
+    private fun getMoviePhotos() {
         viewModelScope.launch {
             getMoviePhotosUseCase.getMoviePhotos(args.movieId).also { resultState ->
                 moviePhotosLiveData.value = UIState.Loading
@@ -91,9 +94,28 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
+    fun getRecommendedMovies(page: Int) {
+        viewModelScope.launch {
+            getRecommendedMoviesUseCase.getRecommendedMovies(args.movieId, page).also { resultState ->
+                recommendedMoviesLiveData.value = UIState.Loading
+                resultState onSuccess {
+                    recommendedMoviesLiveData.value = UIState.Success(data?.results)
+                }
+                resultState onError {
+                    recommendedMoviesLiveData.value =
+                        UIState.Failure(
+                            ErrorStatus.APPLICATION_ERROR,
+                            application.getString(R.string.default_application_error)
+                        )
+                }
+            }
+        }
+    }
+
     fun loadData() {
         getMovieDetail()
         getMovieCredits()
         getMoviePhotos()
+        getRecommendedMovies(1)
     }
 }

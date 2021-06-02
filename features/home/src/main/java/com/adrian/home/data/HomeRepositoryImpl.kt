@@ -15,10 +15,13 @@ import com.adrian.home.data.network.model.nowplayingmovies.toDomainModel
 import com.adrian.home.data.network.model.nowplayingmovies.toEntity
 import com.adrian.home.data.network.model.popularmovies.toDomainModel
 import com.adrian.home.data.network.model.popularmovies.toEntity
+import com.adrian.home.data.network.model.recommendedmovies.RecommendedMoviesListJson
+import com.adrian.home.data.network.model.recommendedmovies.toDomainModel
 import com.adrian.home.data.network.service.HomeRetrofitService
 import com.adrian.home.domain.model.genre.Genre
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 import com.adrian.home.domain.model.popularmovies.PopularMoviesList
+import com.adrian.home.domain.model.recommendedmovies.RecommendedMoviesList
 import com.adrian.home.domain.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import java.io.IOException
@@ -148,6 +151,25 @@ class HomeRepositoryImpl(
                 safeApiCall(Dispatchers.IO) { homeRetrofitService.getMoviePhotos(movieId) }) {
                 is ApiResult.Success -> {
                     response.value
+                }
+                is ApiResult.GenericError -> {
+                    null
+                }
+                is ApiResult.NetworkError -> {
+                    null
+                }
+            }
+        } catch (e: IOException) {
+            return null
+        }
+    }
+
+    override suspend fun getRecommendedMovies(movieId: Int, page: Int): RecommendedMoviesList? {
+        try {
+            return when (val response =
+                safeApiCall(Dispatchers.IO) { homeRetrofitService.getRecommendedMovies(movieId, page) }) {
+                is ApiResult.Success -> {
+                    response.value.toDomainModel()
                 }
                 is ApiResult.GenericError -> {
                     null

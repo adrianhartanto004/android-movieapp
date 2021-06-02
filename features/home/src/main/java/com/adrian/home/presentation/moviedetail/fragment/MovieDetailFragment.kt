@@ -23,6 +23,7 @@ import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.data.network.model.moviephoto.Backdrop
 import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
 import com.adrian.home.databinding.FragmentMovieDetailBinding
+import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
 import com.adrian.home.presentation.moviedetail.adapter.*
 import com.adrian.home.presentation.moviedetail.viewmodel.MovieDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,8 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     private lateinit var movieDetailCastItemAdapter: MovieDetailCastItemAdapter
     private lateinit var movieDetailPhotoAdapter: MovieDetailPhotoAdapter
     private lateinit var movieDetailPhotoItemAdapter: MovieDetailPhotoItemAdapter
+    private lateinit var movieDetailRecommendationAdapter: MovieDetailRecommendationAdapter
+    private lateinit var movieDetailRecommendationItemAdapter: MovieDetailRecommendationItemAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     private val movieDetailObserver = Observer<UIState<MovieDetailResponseJson>> { state ->
@@ -87,6 +90,17 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         }
     }
 
+    private val recommendedMoviesObserver = Observer<UIState<List<RecommendedMovies>>> { state ->
+        state onLoading {
+        }
+        state onSuccess {
+            movieDetailRecommendationItemAdapter.submitList(data ?: listOf())
+        }
+        state onFailure {
+            showLongToast(message)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -109,6 +123,7 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         observe(viewModel.movieDetailLiveData, movieDetailObserver)
         observe(viewModel.movieCreditsLiveData, movieCreditsObserver)
         observe(viewModel.moviePhotosLiveData, moviePhotosObserver)
+        observe(viewModel.recommendedMoviesLiveData, recommendedMoviesObserver)
         viewModel.loadData()
     }
 
@@ -119,11 +134,14 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         movieDetailCastAdapter = MovieDetailCastAdapter(movieDetailCastItemAdapter)
         movieDetailPhotoItemAdapter = MovieDetailPhotoItemAdapter()
         movieDetailPhotoAdapter = MovieDetailPhotoAdapter(movieDetailPhotoItemAdapter)
+        movieDetailRecommendationItemAdapter = MovieDetailRecommendationItemAdapter()
+        movieDetailRecommendationAdapter = MovieDetailRecommendationAdapter(movieDetailRecommendationItemAdapter)
 
         concatAdapter = ConcatAdapter(
             movieDetailStorylineAdapter,
             movieDetailCastAdapter,
-            movieDetailPhotoAdapter
+            movieDetailPhotoAdapter,
+            movieDetailRecommendationAdapter
         )
 
         binding.apply {
