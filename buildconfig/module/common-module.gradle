@@ -2,7 +2,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: "androidx.navigation.safeargs"
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -89,6 +89,9 @@ dependencies {
     //navigation
     implementation rootProject.ext.navigationComponents.navigationFragment
     implementation rootProject.ext.navigationComponents.navigationUi
+
+    //Flexbox
+    implementation rootProject.ext.supportLibDependencies.flexBox
 
     //Test Dependencies
     testImplementation 'junit:junit:4.13.2'

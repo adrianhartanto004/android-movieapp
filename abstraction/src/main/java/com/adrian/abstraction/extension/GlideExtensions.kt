@@ -21,3 +21,20 @@ fun ImageView.loadImageUrl(url: String?, options: RequestOptions? = null) {
             .into(this)
     }
 }
+
+fun ImageView.loadImageUrlCircleCrop(url: String?, options: RequestOptions? = null) {
+    if (options != null) {
+        Glide.with(context)
+            .load(UrlProvider.BASE_IMAGE_URL + url)
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .apply(options)
+            .circleCrop()
+            .into(this)
+    } else {
+        Glide.with(context)
+            .load(UrlProvider.BASE_IMAGE_URL + url)
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .circleCrop()
+            .into(this)
+    }
+}

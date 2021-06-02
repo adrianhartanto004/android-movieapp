@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_poster"
+        android:layout_width="110dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:minLines="2"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_poster"
+        app:layout_constraintStart_toStartOf="@+id/iv_poster"
+        app:layout_constraintTop_toBottomOf="@+id/iv_poster"
+        tools:text="Avengers: Infinity War" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="2012 - 2018" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

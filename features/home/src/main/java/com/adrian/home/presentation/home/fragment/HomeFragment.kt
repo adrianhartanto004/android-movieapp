@@ -41,7 +41,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val popularMoviesObserver = Observer<UIState<List<PopularMovies>>> { state ->
         state onSuccess {
-            popularMoviesItemAdapter.submitList(data)
+            popularMoviesItemAdapter.submitList(data ?: listOf())
         }
         state onFailure {
             showLongToast(message)
@@ -50,7 +50,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val nowPlayingMoviesObserver = Observer<UIState<List<NowPlayingMovies>>> { state ->
         state onSuccess {
-            nowPlayingMoviesItemAdapter.submitList(data)
+            nowPlayingMoviesItemAdapter.submitList(data ?: listOf())
         }
         state onFailure {
             showLongToast(message)
@@ -59,7 +59,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val genresObserver = Observer<UIState<List<Genre>>> { state ->
         state onSuccess {
-            nowPlayingMoviesItemAdapter.setGenres(data)
+            nowPlayingMoviesItemAdapter.setGenres(data ?: listOf())
         }
         state onFailure {
         }
@@ -70,7 +70,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         super.onCreate(savedInstanceState)
         return binding.root
     }
@@ -100,5 +100,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         observe(viewModel.nowPlayingMoviesLiveData, nowPlayingMoviesObserver)
         observe(viewModel.genresLiveData, genresObserver)
         viewModel.loadData()
+
+        popularMoviesItemAdapter.setOnItemClickedListener {
+            viewModel.navigateToMovieDetail(it.id)
+        }
     }
 }

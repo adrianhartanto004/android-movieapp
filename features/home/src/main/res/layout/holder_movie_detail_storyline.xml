@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/iv_poster"
+        android:layout_width="125dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_poster"
+        app:layout_constraintTop_toTopOf="@+id/iv_poster"
+        tools:text="Avengers: Infinity War" />
+
+    <ImageView
+        android:id="@+id/iv_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_star_orange"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="9.3"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_star"
+        app:layout_constraintStart_toEndOf="@+id/iv_star"
+        app:layout_constraintTop_toTopOf="@+id/iv_star" />
+
+    <TextView
+        android:id="@+id/tv_vote_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_rating"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title"
+        app:layout_constraintStart_toEndOf="@+id/tv_rating"
+        tools:text="(10000)" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_genre"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/tv_release_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_star"
+        app:layout_constraintTop_toBottomOf="@+id/iv_star"
+        tools:itemCount="3"
+        tools:listitem="@layout/holder_movie_detail_genres" />
+
+    <TextView
+        android:id="@+id/tv_release_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="Release date: "
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_poster"
+        app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+
+    <TextView
+        android:id="@+id/tv_movie_language"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Original language:"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/tv_release_date"
+        app:layout_constraintStart_toStartOf="@+id/tv_release_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_release_date" />
+
+    <TextView
+        android:id="@+id/tv_production_company"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Production company: "
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/tv_movie_language"
+        app:layout_constraintStart_toStartOf="@+id/tv_movie_language"
+        app:layout_constraintTop_toBottomOf="@+id/tv_movie_language" />
+
+    <TextView
+        android:id="@+id/tv_production_countries"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Production countries:"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/tv_production_company"
+        app:layout_constraintStart_toStartOf="@+id/tv_production_company"
+        app:layout_constraintTop_toBottomOf="@+id/tv_production_company" />
+
+    <TextView
+        android:id="@+id/tv_budget"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Budget:"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/tv_production_countries"
+        app:layout_constraintStart_toStartOf="@+id/tv_production_countries"
+        app:layout_constraintTop_toBottomOf="@+id/tv_production_countries" />
+
+    <TextView
+        android:id="@+id/tv_revenue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Revenue:"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/tv_budget"
+        app:layout_constraintStart_toStartOf="@+id/tv_production_countries"
+        app:layout_constraintTop_toBottomOf="@+id/tv_budget" />
+
+    <TextView
+        android:id="@+id/tv_overview_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="OVERVIEW"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/tv_revenue"
+        app:layout_constraintStart_toStartOf="@+id/tv_revenue"
+        app:layout_constraintTop_toBottomOf="@+id/tv_revenue" />
+
+    <TextView
+        android:id="@+id/tv_overview_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Following a zombie outbreak in Las Vegas, a group of mercenaries take the ultimate gamble: venturing into the quarantine zone to pull off the greatest heist ever attempted."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_overview_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_overview_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
