@@ -10,7 +10,9 @@ import com.adrian.abstraction.common.state.onError
 import com.adrian.abstraction.common.state.onSuccess
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
+import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
+import com.adrian.home.domain.usecase.GetMovieCreditsUseCase
 import com.adrian.home.domain.usecase.GetMovieDetailUseCase
 import com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,10 +23,12 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val application: Application,
-    private val getMovieDetailUseCase: GetMovieDetailUseCase
+    private val getMovieDetailUseCase: GetMovieDetailUseCase,
+    private val getMovieCreditsUseCase: GetMovieCreditsUseCase
 ) : BaseViewModel(savedStateHandle) {
 
     val movieDetailLiveData: MutableLiveData<UIState<MovieDetailResponseJson>> = MutableLiveData()
+    val movieCreditsLiveData: MutableLiveData<UIState<MovieCreditListJson>> = MutableLiveData()
 
     private val args: MovieDetailFragmentArgs by navArgs()
 
@@ -46,7 +50,26 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
+    fun getMovieCredits() {
+        viewModelScope.launch {
+            getMovieCreditsUseCase.getMovieCredits(args.movieId).also { resultState ->
+                movieCreditsLiveData.value = UIState.Loading
+                resultState onSuccess {
+                    movieCreditsLiveData.value = UIState.Success(data)
+                }
+                resultState onError {
+                    movieCreditsLiveData.value =
+                        UIState.Failure(
+                            ErrorStatus.APPLICATION_ERROR,
+                            application.getString(R.string.default_application_error)
+                        )
+                }
+            }
+        }
+    }
+
     fun loadData() {
         getMovieDetail()
+        getMovieCredits()
     }
 }

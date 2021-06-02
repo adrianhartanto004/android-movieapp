@@ -90,6 +90,9 @@ dependencies {
     implementation rootProject.ext.navigationComponents.navigationFragment
     implementation rootProject.ext.navigationComponents.navigationUi
 
+    //Flexbox
+    implementation rootProject.ext.supportLibDependencies.flexBox
+
     //Test Dependencies
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0'

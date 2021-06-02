@@ -1,5 +1,6 @@
 package com.adrian.home.domain.repository
 
+import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.domain.model.genre.Genre
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
@@ -10,4 +11,5 @@ interface HomeRepository {
     suspend fun getNowPlayingMovies(page: Int): NowPlayingMoviesList
     suspend fun getGenres(): List<Genre>
     suspend fun getMovieDetail(movieId: Int): MovieDetailResponseJson?
+    suspend fun getMovieCredits(movieId: Int): MovieCreditListJson?
 }

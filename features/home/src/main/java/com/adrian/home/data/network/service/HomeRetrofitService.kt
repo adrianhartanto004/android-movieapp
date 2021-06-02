@@ -1,6 +1,7 @@
 package com.adrian.home.data.network.service
 
 import com.adrian.home.data.network.model.genre.GenreListJson
+import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.data.network.model.nowplayingmovies.NowPlayingMoviesListJson
 import com.adrian.home.data.network.model.popularmovies.PopularMovieListJson
@@ -20,5 +21,8 @@ interface HomeRetrofitService {
 
     @GET("movie/{movieId}")
     suspend fun getMovieDetail(@Path("movieId") movieId: Int): MovieDetailResponseJson
+
+    @GET("movie/{movieId}/credits")
+    suspend fun getMovieCredits(@Path("movieId") movieId: Int): MovieCreditListJson
 
 }
