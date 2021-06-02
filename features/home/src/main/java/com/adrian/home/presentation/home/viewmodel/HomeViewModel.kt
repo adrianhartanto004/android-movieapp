@@ -96,6 +96,11 @@ class HomeViewModel @Inject constructor(
         navManager.navigate(navDirections)
     }
 
+    fun navigateToMorePopularMovies() {
+        val navDirections = HomeFragmentDirections.actionPopularMoviesShowAll()
+        navManager.navigate(navDirections)
+    }
+
     fun loadData() {
         getPopularMovies(1)
         getNowPlayingMovies(1)

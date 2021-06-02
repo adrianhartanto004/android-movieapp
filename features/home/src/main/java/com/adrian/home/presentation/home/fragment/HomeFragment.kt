@@ -101,6 +101,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         observe(viewModel.genresLiveData, genresObserver)
         viewModel.loadData()
 
+        popularMoviesAdapter.setOnShowMoreClickListener {
+            viewModel.navigateToMorePopularMovies()
+        }
+
         popularMoviesItemAdapter.setOnItemClickedListener {
             viewModel.navigateToMovieDetail(it.id)
         }
