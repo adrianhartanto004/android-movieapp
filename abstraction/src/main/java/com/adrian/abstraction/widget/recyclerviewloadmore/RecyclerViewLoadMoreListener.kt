@@ -11,8 +11,8 @@ abstract class RecyclerViewLoadMoreListener(layoutManager: LinearLayoutManager) 
 
     private var isRecyclerViewLoading by Delegates.notNull<Boolean>()
     private var visibleThreshold = 10
-    private var STARTING_PAGE_INDEX = 0
-    private var currentPage = 0
+    private var STARTING_PAGE_INDEX = 1
+    private var currentPage = 1
     private var hasNextPage = true
     private var currentItemCount = 0
     private var isScrolling = false

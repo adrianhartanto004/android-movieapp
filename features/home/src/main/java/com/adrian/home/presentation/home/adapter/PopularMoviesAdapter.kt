@@ -23,6 +23,8 @@ internal class PopularMoviesAdapter(private val popularMoviesItemAdapter: Popula
         return holder
     }
 
+    private var onShowMoreClickListener: (() -> Unit)? = null
+
     override fun getItemCount(): Int = 1
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -35,6 +37,8 @@ internal class PopularMoviesAdapter(private val popularMoviesItemAdapter: Popula
             setHasFixedSize(true)
             isNestedScrollingEnabled = false
         }
+
+        holder.binding.tvShowAll.setOnClickListener { onShowMoreClickListener?.invoke() }
     }
 
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
@@ -46,6 +50,10 @@ internal class PopularMoviesAdapter(private val popularMoviesItemAdapter: Popula
             recyclerViewManagerState = it
         }
     }
+    fun setOnShowMoreClickListener(listener: () -> Unit) {
+        this.onShowMoreClickListener = listener
+    }
+
 
     internal inner class ViewHolder(val binding: HolderPopularMoviesBinding) :
         RecyclerView.ViewHolder(binding.root)
