@@ -6,6 +6,7 @@ import com.adrian.home.data.database.HomeDao
 import com.adrian.home.data.database.model.genre.toDomainModel
 import com.adrian.home.data.database.model.nowplayingmovies.toDomainModel
 import com.adrian.home.data.database.model.popularmovies.toDomainModel
+import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.genre.toDomainModel
 import com.adrian.home.data.network.model.genre.toEntity
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
@@ -170,6 +171,25 @@ class HomeRepositoryImpl(
                 safeApiCall(Dispatchers.IO) { homeRetrofitService.getRecommendedMovies(movieId, page) }) {
                 is ApiResult.Success -> {
                     response.value.toDomainModel()
+                }
+                is ApiResult.GenericError -> {
+                    null
+                }
+                is ApiResult.NetworkError -> {
+                    null
+                }
+            }
+        } catch (e: IOException) {
+            return null
+        }
+    }
+
+    override suspend fun getAuthorReviews(movieId: Int, page: Int): AuthorReviewListJson? {
+        try {
+            return when (val response =
+                safeApiCall(Dispatchers.IO) { homeRetrofitService.getAuthorReviews(movieId, page) }) {
+                is ApiResult.Success -> {
+                    response.value
                 }
                 is ApiResult.GenericError -> {
                     null

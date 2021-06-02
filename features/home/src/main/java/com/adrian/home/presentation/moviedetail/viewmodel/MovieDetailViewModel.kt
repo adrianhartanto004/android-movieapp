@@ -10,14 +10,13 @@ import com.adrian.abstraction.common.state.onError
 import com.adrian.abstraction.common.state.onSuccess
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
+import com.adrian.home.data.network.model.authorreview.AuthorReview
+import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.data.network.model.moviephoto.Backdrop
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
-import com.adrian.home.domain.usecase.GetMovieCreditsUseCase
-import com.adrian.home.domain.usecase.GetMovieDetailUseCase
-import com.adrian.home.domain.usecase.GetMoviePhotosUseCase
-import com.adrian.home.domain.usecase.GetRecommendedMoviesUseCase
+import com.adrian.home.domain.usecase.*
 import com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,13 +29,15 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMoviePhotosUseCase: GetMoviePhotosUseCase,
-    private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase
+    private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
+    private val getAuthorReviewsUseCase: GetAuthorReviewsUseCase
 ) : BaseViewModel(savedStateHandle) {
 
     val movieDetailLiveData: MutableLiveData<UIState<MovieDetailResponseJson>> = MutableLiveData()
     val movieCreditsLiveData: MutableLiveData<UIState<MovieCreditListJson>> = MutableLiveData()
     val moviePhotosLiveData: MutableLiveData<UIState<List<Backdrop>>> = MutableLiveData()
     val recommendedMoviesLiveData: MutableLiveData<UIState<List<RecommendedMovies>>> = MutableLiveData()
+    val authorReviewsLiveData: MutableLiveData<UIState<AuthorReviewListJson>> = MutableLiveData()
 
     private val args: MovieDetailFragmentArgs by navArgs()
 
@@ -112,10 +113,29 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
+    fun getAuthorReviews(page: Int) {
+        viewModelScope.launch {
+            getAuthorReviewsUseCase.getAuthorReviews(args.movieId, page).also { resultState ->
+                authorReviewsLiveData.value = UIState.Loading
+                resultState onSuccess {
+                    authorReviewsLiveData.value = UIState.Success(data)
+                }
+                resultState onError {
+                    authorReviewsLiveData.value =
+                        UIState.Failure(
+                            ErrorStatus.APPLICATION_ERROR,
+                            application.getString(R.string.default_application_error)
+                        )
+                }
+            }
+        }
+    }
+
     fun loadData() {
         getMovieDetail()
         getMovieCredits()
         getMoviePhotos()
         getRecommendedMovies(1)
+        getAuthorReviews(1)
     }
 }

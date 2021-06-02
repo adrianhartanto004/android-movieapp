@@ -18,10 +18,11 @@ import com.adrian.abstraction.extension.observe
 import com.adrian.abstraction.extension.showLongToast
 import com.adrian.abstraction.presentation.fragment.BaseFragment
 import com.adrian.home.R
+import com.adrian.home.data.network.model.authorreview.AuthorReview
+import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.data.network.model.moviephoto.Backdrop
-import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
 import com.adrian.home.databinding.FragmentMovieDetailBinding
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
 import com.adrian.home.presentation.moviedetail.adapter.*
@@ -45,6 +46,8 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     private lateinit var movieDetailPhotoItemAdapter: MovieDetailPhotoItemAdapter
     private lateinit var movieDetailRecommendationAdapter: MovieDetailRecommendationAdapter
     private lateinit var movieDetailRecommendationItemAdapter: MovieDetailRecommendationItemAdapter
+    private lateinit var movieDetailAuthorReviewAdapter: MovieDetailAuthorReviewAdapter
+    private lateinit var movieDetailAuthorReviewItemAdapter: MovieDetailAuthorReviewItemAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     private val movieDetailObserver = Observer<UIState<MovieDetailResponseJson>> { state ->
@@ -101,6 +104,18 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         }
     }
 
+    private val authorReviewsObserver = Observer<UIState<AuthorReviewListJson>> { state ->
+        state onLoading {
+        }
+        state onSuccess {
+            movieDetailAuthorReviewAdapter.submitList(data)
+            movieDetailAuthorReviewItemAdapter.addMoreData(data?.authorReviews ?: listOf())
+        }
+        state onFailure {
+            showLongToast(message)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -124,6 +139,7 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         observe(viewModel.movieCreditsLiveData, movieCreditsObserver)
         observe(viewModel.moviePhotosLiveData, moviePhotosObserver)
         observe(viewModel.recommendedMoviesLiveData, recommendedMoviesObserver)
+        observe(viewModel.authorReviewsLiveData, authorReviewsObserver)
         viewModel.loadData()
     }
 
@@ -136,12 +152,16 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         movieDetailPhotoAdapter = MovieDetailPhotoAdapter(movieDetailPhotoItemAdapter)
         movieDetailRecommendationItemAdapter = MovieDetailRecommendationItemAdapter()
         movieDetailRecommendationAdapter = MovieDetailRecommendationAdapter(movieDetailRecommendationItemAdapter)
+        movieDetailAuthorReviewAdapter = MovieDetailAuthorReviewAdapter()
+        movieDetailAuthorReviewItemAdapter = MovieDetailAuthorReviewItemAdapter()
 
         concatAdapter = ConcatAdapter(
             movieDetailStorylineAdapter,
             movieDetailCastAdapter,
             movieDetailPhotoAdapter,
-            movieDetailRecommendationAdapter
+            movieDetailRecommendationAdapter,
+            movieDetailAuthorReviewAdapter,
+            movieDetailAuthorReviewItemAdapter
         )
 
         binding.apply {
@@ -160,5 +180,6 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
 
     override fun onRefresh() {
         viewModel.loadData()
+        movieDetailAuthorReviewItemAdapter.clearAllElements()
     }
 }

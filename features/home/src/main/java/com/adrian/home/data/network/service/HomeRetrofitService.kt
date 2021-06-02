@@ -1,5 +1,6 @@
 package com.adrian.home.data.network.service
 
+import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.genre.GenreListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
@@ -35,5 +36,11 @@ interface HomeRetrofitService {
         @Path("movieId") movieId: Int,
         @Query("page") page: Int
     ): RecommendedMoviesListJson
+
+    @GET("movie/{movieId}/reviews")
+    suspend fun getAuthorReviews(
+        @Path("movieId") movieId: Int,
+        @Query("page") page: Int
+    ): AuthorReviewListJson
 
 }
