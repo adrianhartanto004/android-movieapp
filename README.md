@@ -20,3 +20,5 @@
 
 
 <img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-example.PNG">
+
+<img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-wip2.PNG">
