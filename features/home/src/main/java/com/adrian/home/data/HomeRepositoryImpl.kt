@@ -10,6 +10,7 @@ import com.adrian.home.data.network.model.genre.toDomainModel
 import com.adrian.home.data.network.model.genre.toEntity
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
+import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
 import com.adrian.home.data.network.model.nowplayingmovies.toDomainModel
 import com.adrian.home.data.network.model.nowplayingmovies.toEntity
 import com.adrian.home.data.network.model.popularmovies.toDomainModel
@@ -126,6 +127,25 @@ class HomeRepositoryImpl(
         try {
             return when (val response =
                 safeApiCall(Dispatchers.IO) { homeRetrofitService.getMovieCredits(movieId) }) {
+                is ApiResult.Success -> {
+                    response.value
+                }
+                is ApiResult.GenericError -> {
+                    null
+                }
+                is ApiResult.NetworkError -> {
+                    null
+                }
+            }
+        } catch (e: IOException) {
+            return null
+        }
+    }
+
+    override suspend fun getMoviePhotos(movieId: Int): MoviesPhotoListJson? {
+        try {
+            return when (val response =
+                safeApiCall(Dispatchers.IO) { homeRetrofitService.getMoviePhotos(movieId) }) {
                 is ApiResult.Success -> {
                     response.value
                 }

@@ -12,8 +12,11 @@ import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
+import com.adrian.home.data.network.model.moviephoto.Backdrop
+import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
 import com.adrian.home.domain.usecase.GetMovieCreditsUseCase
 import com.adrian.home.domain.usecase.GetMovieDetailUseCase
+import com.adrian.home.domain.usecase.GetMoviePhotosUseCase
 import com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,11 +27,13 @@ class MovieDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
-    private val getMovieCreditsUseCase: GetMovieCreditsUseCase
+    private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
+    private val getMoviePhotosUseCase: GetMoviePhotosUseCase
 ) : BaseViewModel(savedStateHandle) {
 
     val movieDetailLiveData: MutableLiveData<UIState<MovieDetailResponseJson>> = MutableLiveData()
     val movieCreditsLiveData: MutableLiveData<UIState<MovieCreditListJson>> = MutableLiveData()
+    val moviePhotosLiveData: MutableLiveData<UIState<List<Backdrop>>> = MutableLiveData()
 
     private val args: MovieDetailFragmentArgs by navArgs()
 
@@ -68,8 +73,27 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
+    fun getMoviePhotos() {
+        viewModelScope.launch {
+            getMoviePhotosUseCase.getMoviePhotos(args.movieId).also { resultState ->
+                moviePhotosLiveData.value = UIState.Loading
+                resultState onSuccess {
+                    moviePhotosLiveData.value = UIState.Success(data?.backdrops)
+                }
+                resultState onError {
+                    moviePhotosLiveData.value =
+                        UIState.Failure(
+                            ErrorStatus.APPLICATION_ERROR,
+                            application.getString(R.string.default_application_error)
+                        )
+                }
+            }
+        }
+    }
+
     fun loadData() {
         getMovieDetail()
         getMovieCredits()
+        getMoviePhotos()
     }
 }

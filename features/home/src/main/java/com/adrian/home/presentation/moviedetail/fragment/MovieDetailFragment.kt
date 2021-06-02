@@ -20,11 +20,10 @@ import com.adrian.abstraction.presentation.fragment.BaseFragment
 import com.adrian.home.R
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
+import com.adrian.home.data.network.model.moviephoto.Backdrop
+import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
 import com.adrian.home.databinding.FragmentMovieDetailBinding
-import com.adrian.home.presentation.moviedetail.adapter.MovieDetailCastAdapter
-import com.adrian.home.presentation.moviedetail.adapter.MovieDetailCastItemAdapter
-import com.adrian.home.presentation.moviedetail.adapter.MovieDetailGenreAdapter
-import com.adrian.home.presentation.moviedetail.adapter.MovieDetailStorylineAdapter
+import com.adrian.home.presentation.moviedetail.adapter.*
 import com.adrian.home.presentation.moviedetail.viewmodel.MovieDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +40,8 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     private lateinit var movieDetailGenreAdapter: MovieDetailGenreAdapter
     private lateinit var movieDetailCastAdapter: MovieDetailCastAdapter
     private lateinit var movieDetailCastItemAdapter: MovieDetailCastItemAdapter
+    private lateinit var movieDetailPhotoAdapter: MovieDetailPhotoAdapter
+    private lateinit var movieDetailPhotoItemAdapter: MovieDetailPhotoItemAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
     private val movieDetailObserver = Observer<UIState<MovieDetailResponseJson>> { state ->
@@ -48,10 +49,10 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
             binding.swipeRefresh.isRefreshing = true
         }
         state onSuccess {
-            if(data != null){
+            if (data != null) {
                 movieDetailStorylineAdapter.submitList(data ?: MovieDetailResponseJson())
                 binding.rvConcat.isVisible = true
-            }else{
+            } else {
                 binding.rvConcat.isVisible = false
             }
             binding.swipeRefresh.isRefreshing = false
@@ -69,6 +70,17 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         }
         state onSuccess {
             movieDetailCastItemAdapter.submitList(data?.cast ?: listOf())
+        }
+        state onFailure {
+            showLongToast(message)
+        }
+    }
+
+    private val moviePhotosObserver = Observer<UIState<List<Backdrop>>> { state ->
+        state onLoading {
+        }
+        state onSuccess {
+            movieDetailPhotoItemAdapter.submitList(data ?: listOf())
         }
         state onFailure {
             showLongToast(message)
@@ -96,6 +108,7 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         setRecyclerView()
         observe(viewModel.movieDetailLiveData, movieDetailObserver)
         observe(viewModel.movieCreditsLiveData, movieCreditsObserver)
+        observe(viewModel.moviePhotosLiveData, moviePhotosObserver)
         viewModel.loadData()
     }
 
@@ -104,10 +117,13 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         movieDetailStorylineAdapter = MovieDetailStorylineAdapter(movieDetailGenreAdapter)
         movieDetailCastItemAdapter = MovieDetailCastItemAdapter()
         movieDetailCastAdapter = MovieDetailCastAdapter(movieDetailCastItemAdapter)
+        movieDetailPhotoItemAdapter = MovieDetailPhotoItemAdapter()
+        movieDetailPhotoAdapter = MovieDetailPhotoAdapter(movieDetailPhotoItemAdapter)
 
         concatAdapter = ConcatAdapter(
             movieDetailStorylineAdapter,
-            movieDetailCastAdapter
+            movieDetailCastAdapter,
+            movieDetailPhotoAdapter
         )
 
         binding.apply {

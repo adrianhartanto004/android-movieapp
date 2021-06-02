@@ -3,6 +3,7 @@ package com.adrian.home.data.network.service
 import com.adrian.home.data.network.model.genre.GenreListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
+import com.adrian.home.data.network.model.moviephoto.MoviesPhotoListJson
 import com.adrian.home.data.network.model.nowplayingmovies.NowPlayingMoviesListJson
 import com.adrian.home.data.network.model.popularmovies.PopularMovieListJson
 import retrofit2.http.GET
@@ -24,5 +25,8 @@ interface HomeRetrofitService {
 
     @GET("movie/{movieId}/credits")
     suspend fun getMovieCredits(@Path("movieId") movieId: Int): MovieCreditListJson
+
+    @GET("movie/{movieId}/images")
+    suspend fun getMoviePhotos(@Path("movieId") movieId: Int): MoviesPhotoListJson
 
 }
