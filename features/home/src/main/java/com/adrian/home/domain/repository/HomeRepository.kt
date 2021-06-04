@@ -1,5 +1,7 @@
 package com.adrian.home.domain.repository
 
+import com.adrian.abstraction.common.data.model.FavouriteMovieEntity
+import com.adrian.abstraction.common.domain.model.FavouriteMovie
 import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
@@ -18,4 +20,6 @@ interface HomeRepository {
     suspend fun getMoviePhotos(movieId: Int): MoviesPhotoListJson?
     suspend fun getRecommendedMovies(movieId: Int, page: Int): RecommendedMoviesList?
     suspend fun getAuthorReviews(movieId: Int, page: Int): AuthorReviewListJson?
+    suspend fun isFavouriteMovieExist(movieId: Int): Boolean
+    suspend fun addFavouriteMovie(favouriteMovie: FavouriteMovie): Boolean
 }

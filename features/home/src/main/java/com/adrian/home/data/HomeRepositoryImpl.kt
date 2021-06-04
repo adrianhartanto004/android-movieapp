@@ -1,5 +1,8 @@
 package com.adrian.home.data
 
+import com.adrian.abstraction.common.data.SharedDao
+import com.adrian.abstraction.common.data.model.toEntity
+import com.adrian.abstraction.common.domain.model.FavouriteMovie
 import com.adrian.abstraction.common.state.ApiResult
 import com.adrian.abstraction.extension.safeApiCall
 import com.adrian.home.data.database.HomeDao
@@ -16,7 +19,6 @@ import com.adrian.home.data.network.model.nowplayingmovies.toDomainModel
 import com.adrian.home.data.network.model.nowplayingmovies.toEntity
 import com.adrian.home.data.network.model.popularmovies.toDomainModel
 import com.adrian.home.data.network.model.popularmovies.toEntity
-import com.adrian.home.data.network.model.recommendedmovies.RecommendedMoviesListJson
 import com.adrian.home.data.network.model.recommendedmovies.toDomainModel
 import com.adrian.home.data.network.service.HomeRetrofitService
 import com.adrian.home.domain.model.genre.Genre
@@ -25,11 +27,13 @@ import com.adrian.home.domain.model.popularmovies.PopularMoviesList
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMoviesList
 import com.adrian.home.domain.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class HomeRepositoryImpl(
     private val homeRetrofitService: HomeRetrofitService,
-    private val homeDao: HomeDao
+    private val homeDao: HomeDao,
+    private val sharedDao: SharedDao
 ) : HomeRepository {
     override suspend fun getPopularMovies(page: Int): PopularMoviesList {
         try {
@@ -200,6 +204,31 @@ class HomeRepositoryImpl(
             }
         } catch (e: IOException) {
             return null
+        }
+    }
+
+    override suspend fun isFavouriteMovieExist(movieId: Int): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                sharedDao.isFavouriteMovieExist(movieId)
+            }
+        } catch (e: IOException) {
+            false
+        }
+    }
+
+    override suspend fun addFavouriteMovie(favouriteMovie: FavouriteMovie): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                if (sharedDao.isFavouriteMovieExist(favouriteMovie.id)) {
+                    sharedDao.deleteFavouriteMovie(favouriteMovie.toEntity())
+                } else {
+                    sharedDao.addMovieToFavourite(favouriteMovie.toEntity())
+                }
+                true
+            }
+        } catch (e: IOException) {
+            false
         }
     }
 }

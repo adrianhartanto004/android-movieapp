@@ -1,9 +1,7 @@
 package com.adrian.home.presentation.moviedetail.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,10 +16,10 @@ import com.adrian.abstraction.extension.observe
 import com.adrian.abstraction.extension.showLongToast
 import com.adrian.abstraction.presentation.fragment.BaseFragment
 import com.adrian.home.R
-import com.adrian.home.data.network.model.authorreview.AuthorReview
 import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
+import com.adrian.home.data.network.model.moviedetail.toFavouriteMovie
 import com.adrian.home.data.network.model.moviephoto.Backdrop
 import com.adrian.home.databinding.FragmentMovieDetailBinding
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
@@ -50,6 +48,8 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     private lateinit var movieDetailAuthorReviewItemAdapter: MovieDetailAuthorReviewItemAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
+    private var isLiked = false
+
     private val movieDetailObserver = Observer<UIState<MovieDetailResponseJson>> { state ->
         state onLoading {
             binding.swipeRefresh.isRefreshing = true
@@ -57,6 +57,7 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         state onSuccess {
             if (data != null) {
                 movieDetailStorylineAdapter.submitList(data ?: MovieDetailResponseJson())
+//                viewModel.isFavouriteMovieExist(viewModel.currentFavouriteMovie?.id ?: 0)
                 binding.rvConcat.isVisible = true
             } else {
                 binding.rvConcat.isVisible = false
@@ -116,6 +117,29 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         }
     }
 
+    private val isFavouriteMovieExistObserver = Observer<UIState<Boolean>> { state ->
+        state onLoading {
+        }
+        state onSuccess {
+            isLiked = data!!
+            activity?.invalidateOptionsMenu()
+        }
+        state onFailure {
+            showLongToast(message)
+        }
+    }
+
+    private val addFavouriteMovieObserver = Observer<UIState<Boolean>> { state ->
+        state onLoading {
+        }
+        state onSuccess {
+            viewModel.isFavouriteMovieExist(viewModel.currentFavouriteMovie?.id ?: 0)
+        }
+        state onFailure {
+            showLongToast(message)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -140,6 +164,9 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         observe(viewModel.moviePhotosLiveData, moviePhotosObserver)
         observe(viewModel.recommendedMoviesLiveData, recommendedMoviesObserver)
         observe(viewModel.authorReviewsLiveData, authorReviewsObserver)
+        observe(viewModel.isFavouriteMovieExistLiveData, isFavouriteMovieExistObserver)
+        observe(viewModel.addFavouriteMovieLiveData, addFavouriteMovieObserver)
+        setHasOptionsMenu(true)
         viewModel.loadData()
     }
 
@@ -151,7 +178,8 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         movieDetailPhotoItemAdapter = MovieDetailPhotoItemAdapter()
         movieDetailPhotoAdapter = MovieDetailPhotoAdapter(movieDetailPhotoItemAdapter)
         movieDetailRecommendationItemAdapter = MovieDetailRecommendationItemAdapter()
-        movieDetailRecommendationAdapter = MovieDetailRecommendationAdapter(movieDetailRecommendationItemAdapter)
+        movieDetailRecommendationAdapter =
+            MovieDetailRecommendationAdapter(movieDetailRecommendationItemAdapter)
         movieDetailAuthorReviewAdapter = MovieDetailAuthorReviewAdapter()
         movieDetailAuthorReviewItemAdapter = MovieDetailAuthorReviewItemAdapter()
 
@@ -176,6 +204,25 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
             isEnabled = false
             isRefreshing = true
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.movie_detail_menu, menu)
+        if (isLiked) {
+            menu.findItem(R.id.action_like_movie).setIcon(R.drawable.ic_favourite_red)
+        } else {
+            menu.findItem(R.id.action_like_movie).setIcon(R.drawable.ic_favourite_border_red)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_like_movie -> {
+                viewModel.addFavouriteMovie(viewModel.currentFavouriteMovie?.toFavouriteMovie()!!)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onRefresh() {
