@@ -2,6 +2,7 @@ package com.adrian.home.di
 
 import android.app.Application
 import androidx.room.Room
+import com.adrian.abstraction.common.data.SharedDao
 import com.adrian.abstraction.common.network.RetrofitClient
 import com.adrian.home.data.HomeRepositoryImpl
 import com.adrian.home.data.database.HomeDao
@@ -50,8 +51,9 @@ object HomeModule {
     @Provides
     internal fun provideRepository(
         homeRetrofitService: HomeRetrofitService,
-        homeDao: HomeDao
+        homeDao: HomeDao,
+        sharedDao: SharedDao
     ): HomeRepository {
-        return HomeRepositoryImpl(homeRetrofitService, homeDao)
+        return HomeRepositoryImpl(homeRetrofitService, homeDao, sharedDao)
     }
 }

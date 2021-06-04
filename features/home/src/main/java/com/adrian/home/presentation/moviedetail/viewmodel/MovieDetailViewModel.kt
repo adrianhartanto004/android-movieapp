@@ -4,13 +4,13 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.adrian.abstraction.common.domain.model.FavouriteMovie
 import com.adrian.abstraction.common.network.enum.ErrorStatus
 import com.adrian.abstraction.common.state.UIState
 import com.adrian.abstraction.common.state.onError
 import com.adrian.abstraction.common.state.onSuccess
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
-import com.adrian.home.data.network.model.authorreview.AuthorReview
 import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
@@ -30,7 +30,9 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getMoviePhotosUseCase: GetMoviePhotosUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
-    private val getAuthorReviewsUseCase: GetAuthorReviewsUseCase
+    private val getAuthorReviewsUseCase: GetAuthorReviewsUseCase,
+    private val addFavouriteMovieUseCase: AddFavouriteMovieUseCase,
+    private val getIsFavouriteMovieExistUseCase: GetIsFavouriteMovieExistUseCase
 ) : BaseViewModel(savedStateHandle) {
 
     val movieDetailLiveData: MutableLiveData<UIState<MovieDetailResponseJson>> = MutableLiveData()
@@ -38,7 +40,10 @@ class MovieDetailViewModel @Inject constructor(
     val moviePhotosLiveData: MutableLiveData<UIState<List<Backdrop>>> = MutableLiveData()
     val recommendedMoviesLiveData: MutableLiveData<UIState<List<RecommendedMovies>>> = MutableLiveData()
     val authorReviewsLiveData: MutableLiveData<UIState<AuthorReviewListJson>> = MutableLiveData()
+    val addFavouriteMovieLiveData: MutableLiveData<UIState<Boolean>> = MutableLiveData()
+    val isFavouriteMovieExistLiveData: MutableLiveData<UIState<Boolean>> = MutableLiveData()
 
+    var currentFavouriteMovie: MovieDetailResponseJson? = MovieDetailResponseJson()
     private val args: MovieDetailFragmentArgs by navArgs()
 
     private fun getMovieDetail() {
@@ -46,7 +51,9 @@ class MovieDetailViewModel @Inject constructor(
             getMovieDetailUseCase.getMovieDetail(args.movieId).also { resultState ->
                 movieDetailLiveData.value = UIState.Loading
                 resultState onSuccess {
+                    currentFavouriteMovie = data
                     movieDetailLiveData.value = UIState.Success(data)
+                    isFavouriteMovieExist(data?.id ?: 0)
                 }
                 resultState onError {
                     movieDetailLiveData.value =
@@ -122,6 +129,43 @@ class MovieDetailViewModel @Inject constructor(
                 }
                 resultState onError {
                     authorReviewsLiveData.value =
+                        UIState.Failure(
+                            ErrorStatus.APPLICATION_ERROR,
+                            application.getString(R.string.default_application_error)
+                        )
+                }
+            }
+        }
+    }
+
+
+    fun isFavouriteMovieExist(movieId: Int) {
+        viewModelScope.launch {
+            getIsFavouriteMovieExistUseCase.getIsFavouriteMovieExist(movieId).also { resultState ->
+                isFavouriteMovieExistLiveData.value = UIState.Loading
+                resultState onSuccess {
+                    isFavouriteMovieExistLiveData.value = UIState.Success(data)
+                }
+                resultState onError {
+                    isFavouriteMovieExistLiveData.value =
+                        UIState.Failure(
+                            ErrorStatus.APPLICATION_ERROR,
+                            application.getString(R.string.default_application_error)
+                        )
+                }
+            }
+        }
+    }
+
+    fun addFavouriteMovie(favouriteMovie: FavouriteMovie) {
+        viewModelScope.launch {
+            addFavouriteMovieUseCase.addFavouriteMovie(favouriteMovie).also { resultState ->
+                addFavouriteMovieLiveData.value = UIState.Loading
+                resultState onSuccess {
+                    addFavouriteMovieLiveData.value = UIState.Success(data)
+                }
+                resultState onError {
+                    addFavouriteMovieLiveData.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
