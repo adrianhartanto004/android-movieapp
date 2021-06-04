@@ -1,6 +1,5 @@
 package com.adrian.home.domain.repository
 
-import com.adrian.abstraction.common.data.model.FavouriteMovieEntity
 import com.adrian.abstraction.common.domain.model.FavouriteMovie
 import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.data.network.model.moviecredits.MovieCreditListJson
