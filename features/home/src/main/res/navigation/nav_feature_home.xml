@@ -24,6 +24,7 @@
         android:id="@+id/fragment_movie_detail"
         android:name="com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragment"
         tools:layout="@layout/fragment_movie_detail">
+        <deepLink app:uri="movieApp://featureMovieDetail/?movieId={movieId}"/>
         <argument
             android:name="movieId"
             app:argType="integer" />

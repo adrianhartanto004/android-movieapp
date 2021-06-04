@@ -1,11 +1,13 @@
 package com.adrian.favourites.presentation.fragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adrian.abstraction.common.domain.model.FavouriteMovie
 import com.adrian.abstraction.common.state.UIState
@@ -66,8 +68,9 @@ class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
         observe(viewModel.favouriteMoviesLiveData, favouriteMoviesObserver)
         viewModel.loadData()
 
-//        popularMoviesItemAdapter.setOnItemClickedListener {
-//            viewModel.navigateToMovieDetail(it.id)
-//        }
+        favouriteMoviesAdapter.setOnItemClickedListener {
+            val uri = Uri.parse("movieApp://featureMovieDetail/?movieId=${it.id}")
+            findNavController().navigate(uri)
+        }
     }
 }

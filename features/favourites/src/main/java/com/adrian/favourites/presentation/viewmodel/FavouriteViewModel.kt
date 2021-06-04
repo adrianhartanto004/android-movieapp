@@ -1,6 +1,7 @@
 package com.adrian.favourites.presentation.viewmodel
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -44,11 +45,6 @@ class FavouriteViewModel @Inject constructor(
             }
         }
     }
-
-//    fun navigateToMovieDetail(movieId: Int) {
-//        val navDirections = HomeFragmentDirections.actionPopularMoviesToMovieDetail(movieId)
-//        navManager.navigate(navDirections)
-//    }
 
     fun loadData() {
         getFavouriteMovies()
