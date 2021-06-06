@@ -9,16 +9,15 @@
     * LiveData
     * ViewModel
     * Room Persistance Library
-    * Clean Architecture + MVVM Architecture
+    * Clean + MVVM Architecture
     * Single activity architecture + Navigation Components
-* Testing
-    * Unit Tests with MockK and Junit5 (Android Junit5)
-    * Mockk
+    * Bottom Navigation
+    * Deeplink navigation
+* Unit Test
+    * MockK
+    * Junit5 (Android Junit5)
 
 
-**Currently Work In Progress**
+<img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-1.PNG"><img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-2.PNG">
 
-
-<img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-example.PNG">
-
-<img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-wip2.PNG">
+<img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-3.PNG">
