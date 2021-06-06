@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/fragment_favourite"
         android:name="com.adrian.favourites.presentation.fragment.FavouriteFragment"
+        android:label="Favourite"
         tools:layout="@layout/fragment_favourite">
 
     </fragment>

@@ -20,9 +20,7 @@ import com.adrian.favourites.R
 import com.adrian.favourites.databinding.FragmentFavouriteBinding
 import com.adrian.favourites.presentation.adapter.FavouriteMoviesAdapter
 import com.adrian.favourites.presentation.viewmodel.FavouriteViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
 
     private lateinit var binding: FragmentFavouriteBinding

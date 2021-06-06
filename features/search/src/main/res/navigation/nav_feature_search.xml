@@ -6,5 +6,6 @@
 
     <fragment
         android:id="@+id/fragment_search"
-        android:name="com.adrian.search.presentation.fragment.SearchFragment"></fragment>
+        android:name="com.adrian.search.presentation.fragment.SearchFragment"
+        android:label="Search"></fragment>
 </navigation>

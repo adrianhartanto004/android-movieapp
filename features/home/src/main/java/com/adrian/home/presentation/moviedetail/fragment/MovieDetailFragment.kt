@@ -25,10 +25,7 @@ import com.adrian.home.databinding.FragmentMovieDetailBinding
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
 import com.adrian.home.presentation.moviedetail.adapter.*
 import com.adrian.home.presentation.moviedetail.viewmodel.MovieDetailViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-
-@AndroidEntryPoint
 class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     SwipeRefreshLayout.OnRefreshListener {
 
@@ -110,7 +107,7 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         }
         state onSuccess {
             movieDetailAuthorReviewAdapter.submitList(data)
-            movieDetailAuthorReviewItemAdapter.addMoreData(data?.authorReviews ?: listOf())
+            movieDetailAuthorReviewItemAdapter.submitList(data?.authorReviews ?: listOf())
         }
         state onFailure {
             showLongToast(message)
@@ -227,6 +224,5 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
 
     override fun onRefresh() {
         viewModel.loadData()
-        movieDetailAuthorReviewItemAdapter.clearAllElements()
     }
 }

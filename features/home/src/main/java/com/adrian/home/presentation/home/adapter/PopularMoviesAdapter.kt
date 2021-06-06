@@ -30,7 +30,6 @@ internal class PopularMoviesAdapter(private val popularMoviesItemAdapter: Popula
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.rvList.apply {
             adapter = popularMoviesItemAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             if (this@PopularMoviesAdapter::recyclerViewManagerState.isInitialized) {
                 layoutManager?.onRestoreInstanceState(recyclerViewManagerState)
             }

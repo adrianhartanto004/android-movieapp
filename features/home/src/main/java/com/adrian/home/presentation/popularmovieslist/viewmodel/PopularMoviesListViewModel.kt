@@ -8,12 +8,10 @@ import com.adrian.abstraction.common.network.enum.ErrorStatus
 import com.adrian.abstraction.common.state.UIState
 import com.adrian.abstraction.common.state.onError
 import com.adrian.abstraction.common.state.onSuccess
-import com.adrian.abstraction.presentation.navigation.NavManager
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
-import com.adrian.home.presentation.popularmovieslist.fragment.PopularMoviesListFragmentDirections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,8 +20,7 @@ import javax.inject.Inject
 class PopularMoviesListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val application: Application,
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val navManager: NavManager
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 ) : BaseViewModel(savedStateHandle) {
 
     var totalPage: Int? = 0
@@ -49,8 +46,4 @@ class PopularMoviesListViewModel @Inject constructor(
         }
     }
 
-    fun navigateToMovieDetail(movieId: Int) {
-        val navDirections = PopularMoviesListFragmentDirections.actionPopularMoviesToMovieDetail(movieId)
-        navManager.navigate(navDirections)
-    }
 }
