@@ -29,7 +29,6 @@ internal class NowPlayingMoviesAdapter(private val nowPlayingMoviesItemAdapter: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.rvList.apply {
             adapter = nowPlayingMoviesItemAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             if (this@NowPlayingMoviesAdapter::recyclerViewManagerState.isInitialized) {
                 layoutManager?.onRestoreInstanceState(recyclerViewManagerState)
             }

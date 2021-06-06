@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adrian.abstraction.common.state.UIState
@@ -24,9 +25,7 @@ import com.adrian.home.presentation.home.adapter.NowPlayingMoviesItemAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesItemAdapter
 import com.adrian.home.presentation.home.viewmodel.HomeViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
@@ -71,7 +70,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        super.onCreate(savedInstanceState)
         return binding.root
     }
 
@@ -91,9 +89,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             popularMoviesAdapter,
             nowPlayingMoviesAdapter
         )
-        binding.apply {
-            rvConcat.layoutManager = LinearLayoutManager(context)
-            rvConcat.adapter = concatAdapter
+        binding.rvConcat.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = concatAdapter
         }
 
         observe(viewModel.popularMoviesLiveData, popularMoviesObserver)
@@ -102,11 +101,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         viewModel.loadData()
 
         popularMoviesAdapter.setOnShowMoreClickListener {
-            viewModel.navigateToMorePopularMovies()
+            val navDirections = HomeFragmentDirections.actionPopularMoviesShowAll()
+            findNavController().navigate(navDirections)
         }
 
         popularMoviesItemAdapter.setOnItemClickedListener {
-            viewModel.navigateToMovieDetail(it.id)
+            val navDirections = HomeFragmentDirections.actionPopularMoviesToMovieDetail(it.id)
+            findNavController().navigate(navDirections)
         }
     }
 }

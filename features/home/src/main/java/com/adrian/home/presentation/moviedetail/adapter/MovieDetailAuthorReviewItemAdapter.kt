@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 internal class MovieDetailAuthorReviewItemAdapter :
     RecyclerView.Adapter<MovieDetailAuthorReviewItemAdapter.ViewHolder>() {
 
-    private var authorReview = arrayListOf<AuthorReview>()
+    private var authorReview = listOf<AuthorReview>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val holder = ViewHolder(
@@ -49,20 +49,25 @@ internal class MovieDetailAuthorReviewItemAdapter :
         }
     }
 
-    fun addMoreData(data: List<AuthorReview>) {
-        val positionStart = data.size
-        this.authorReview.addAll(data)
-        if (positionStart == 0) {
-            notifyDataSetChanged()
-        } else {
-            notifyItemRangeInserted(positionStart, data.size)
-        }
-    }
-
-    fun clearAllElements() {
-        authorReview.clear()
+    fun submitList(data: List<AuthorReview>) {
+        authorReview = data
         notifyDataSetChanged()
     }
+
+//    fun addMoreData(data: List<AuthorReview>) {
+//        val positionStart = data.size
+//        this.authorReview.addAll(data)
+//        if (positionStart == 0) {
+//            notifyDataSetChanged()
+//        } else {
+//            notifyItemRangeInserted(positionStart, data.size)
+//        }
+//    }
+
+//    fun clearAllElements() {
+//        authorReview.clear()
+//        notifyDataSetChanged()
+//    }
 
     internal inner class ViewHolder(val binding: HolderMovieDetailReviewItemBinding) :
         RecyclerView.ViewHolder(binding.root)

@@ -8,23 +8,23 @@
     <fragment
         android:id="@+id/fragment_home"
         android:name="com.adrian.home.presentation.home.fragment.HomeFragment"
+        android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_popular_movies_to_movie_detail"
-            app:destination="@id/fragment_movie_detail"
-            app:popUpTo="@+id/fragment_home" />
+            app:destination="@id/fragment_movie_detail" />
 
         <action
             android:id="@+id/action_popular_movies_show_all"
-            app:destination="@id/fragment_popular_movies_list"
-            app:popUpTo="@+id/fragment_home" />
+            app:destination="@id/fragment_popular_movies_list" />
     </fragment>
 
     <fragment
         android:id="@+id/fragment_movie_detail"
         android:name="com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragment"
+        android:label="Movie Detail"
         tools:layout="@layout/fragment_movie_detail">
-        <deepLink app:uri="movieApp://featureMovieDetail/?movieId={movieId}"/>
+        <deepLink app:uri="movieApp://featureMovieDetail/?movieId={movieId}" />
         <argument
             android:name="movieId"
             app:argType="integer" />
@@ -33,11 +33,11 @@
     <fragment
         android:id="@+id/fragment_popular_movies_list"
         android:name="com.adrian.home.presentation.popularmovieslist.fragment.PopularMoviesListFragment"
+        android:label="Popular Movies List"
         tools:layout="@layout/holder_popular_movies_show_more_list">
 
         <action
             android:id="@+id/action_popular_movies_to_movie_detail"
-            app:destination="@id/fragment_movie_detail"
-            app:popUpTo="@+id/fragment_popular_movies_list" />
+            app:destination="@id/fragment_movie_detail" />
     </fragment>
 </navigation>

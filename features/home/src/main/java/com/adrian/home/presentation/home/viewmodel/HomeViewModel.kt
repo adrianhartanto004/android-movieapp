@@ -8,7 +8,6 @@ import com.adrian.abstraction.common.network.enum.ErrorStatus
 import com.adrian.abstraction.common.state.UIState
 import com.adrian.abstraction.common.state.onError
 import com.adrian.abstraction.common.state.onSuccess
-import com.adrian.abstraction.presentation.navigation.NavManager
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
 import com.adrian.home.domain.model.genre.Genre
@@ -17,7 +16,6 @@ import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.domain.usecase.GetGenresUseCase
 import com.adrian.home.domain.usecase.GetNowPlayingMoviesUseCase
 import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
-import com.adrian.home.presentation.home.fragment.HomeFragmentDirections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,8 +26,7 @@ class HomeViewModel @Inject constructor(
     private val application: Application,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
-    private val getGenresUseCase: GetGenresUseCase,
-    private val navManager: NavManager
+    private val getGenresUseCase: GetGenresUseCase
 ) : BaseViewModel(savedStateHandle) {
 
     val popularMoviesLiveData: MutableLiveData<UIState<List<PopularMovies>>> = MutableLiveData()
@@ -89,16 +86,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun navigateToMovieDetail(movieId: Int) {
-        val navDirections = HomeFragmentDirections.actionPopularMoviesToMovieDetail(movieId)
-        navManager.navigate(navDirections)
-    }
-
-    fun navigateToMorePopularMovies() {
-        val navDirections = HomeFragmentDirections.actionPopularMoviesShowAll()
-        navManager.navigate(navDirections)
     }
 
     fun loadData() {
