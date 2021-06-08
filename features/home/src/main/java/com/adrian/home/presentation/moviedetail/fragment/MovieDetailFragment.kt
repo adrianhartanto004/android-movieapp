@@ -147,6 +147,14 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!viewModel.apiDataReceived) {
+            viewModel.loadData()
+            viewModel.apiDataReceived = true
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar(binding.toolbar)
@@ -164,7 +172,6 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         observe(viewModel.isFavouriteMovieExistLiveData, isFavouriteMovieExistObserver)
         observe(viewModel.addFavouriteMovieLiveData, addFavouriteMovieObserver)
         setHasOptionsMenu(true)
-        viewModel.loadData()
     }
 
     private fun setRecyclerView() {

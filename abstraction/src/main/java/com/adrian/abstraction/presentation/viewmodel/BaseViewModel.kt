@@ -11,6 +11,8 @@ open class BaseViewModel(private val savedStateHandle: SavedStateHandle) : ViewM
 
     val arguments get() = savedStateHandle.get<Bundle>("BUNDLE_ARGS")
 
+    var apiDataReceived = false
+
     @MainThread
     inline fun <reified Args : NavArgs> navArgs() = NavArgsLazy(Args::class) {
         arguments ?: throw IllegalStateException("ViewModel $this has null arguments")
