@@ -22,7 +22,6 @@ import com.adrian.home.databinding.FragmentPopularMoviesListBinding
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.presentation.popularmovieslist.adapter.PopularMoviesListAdapter
 import com.adrian.home.presentation.popularmovieslist.viewmodel.PopularMoviesListViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
 class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_list), SwipeRefreshLayout.OnRefreshListener {
 
@@ -66,6 +65,14 @@ class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!viewModel.apiDataReceived) {
+            reloadPage()
+            viewModel.apiDataReceived = true
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar(binding.toolbar)
@@ -85,7 +92,6 @@ class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_
         setRecyclerViewAdapter()
         setRecyclerViewLoadMore()
         observe(viewModel.popularMoviesLiveData, popularMoviesObserver)
-        reloadPage()
 
         popularMoviesListAdapter.setOnItemClickedListener {
             val navDirections = PopularMoviesListFragmentDirections.actionPopularMoviesToMovieDetail(it.id)

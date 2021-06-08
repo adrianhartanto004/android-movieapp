@@ -73,6 +73,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!viewModel.apiDataReceived) {
+            viewModel.loadData()
+            viewModel.apiDataReceived = true
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
@@ -98,7 +106,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         observe(viewModel.popularMoviesLiveData, popularMoviesObserver)
         observe(viewModel.nowPlayingMoviesLiveData, nowPlayingMoviesObserver)
         observe(viewModel.genresLiveData, genresObserver)
-        viewModel.loadData()
 
         popularMoviesAdapter.setOnShowMoreClickListener {
             val navDirections = HomeFragmentDirections.actionPopularMoviesShowAll()
