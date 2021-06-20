@@ -5,14 +5,18 @@
     * Kotlin
     * Kotlin Coroutines
     * Retrofit
+    * Concat Adapter
+    * Nested Recyclerview
     * Navigation Components
     * LiveData
     * ViewModel
     * Room Persistance Library
     * Clean + MVVM Architecture
-    * Single activity architecture + Navigation Components
+    * Single Activity Architecture
     * Bottom Navigation
-    * Deeplink navigation
+    * Deeplink Navigation
+    * Multi-Module Project (Modularization)
+    * Multi-Module Navigation
 * Unit Test
     * MockK
     * Junit5 (Android Junit5)
