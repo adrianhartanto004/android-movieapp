@@ -15,6 +15,7 @@
     * Single Activity Architecture
     * Bottom Navigation
     * Deeplink Navigation
+    * Safe-args in Navigation
     * Multi-Module Project (Modularization)
     * Multi-Module Navigation
 * Unit Test
