@@ -48,7 +48,7 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
 
     private var isLiked = false
 
-    val args: MovieDetailFragmentArgs by navArgs()
+    private val args: MovieDetailFragmentArgs by navArgs()
 
     private val movieDetailObserver = Observer<UIState<MovieDetailResponseJson>> { state ->
         state onLoading {
@@ -154,10 +154,10 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
 
     override fun onStart() {
         super.onStart()
-//        if (!movieDetailViewModel.apiDataReceived) {
+        if (!movieDetailViewModel.apiDataReceived) {
             movieDetailViewModel.loadData(args.movieId)
-//            movieDetailViewModel.apiDataReceived = true
-//        }
+            movieDetailViewModel.apiDataReceived = true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
