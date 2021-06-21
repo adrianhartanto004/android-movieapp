@@ -44,13 +44,6 @@ ext {
             lifeCycleCompiler  : "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     ]
 
-    daggerHiltDependencies = [
-            daggerHiltAndroid        : "com.google.dagger:hilt-android:${hilt_version}",
-            daggerHiltAndroidCompiler: "com.google.dagger:hilt-android-compiler:${hilt_version}",
-            daggerHiltViewModel      : "androidx.hilt:hilt-lifecycle-viewmodel:${hilt_android_version}",
-            daggerHiltCompiler       : "androidx.hilt:hilt-compiler:${hilt_android_version}"
-    ]
-
     navigationComponents = [
             navigationFragment: "androidx.navigation:navigation-fragment-ktx:$nav_version",
             navigationUi      : "androidx.navigation:navigation-ui-ktx:$nav_version"

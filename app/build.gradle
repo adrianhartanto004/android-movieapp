@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -61,10 +60,11 @@ dependencies {
     implementation rootProject.ext.supportLibDependencies.constraintLayout
     implementation rootProject.ext.supportLibDependencies.googleMaterialDesign
 
-    implementation rootProject.ext.daggerHiltDependencies.daggerHiltAndroid
-    kapt rootProject.ext.daggerHiltDependencies.daggerHiltAndroidCompiler
-    implementation rootProject.ext.daggerHiltDependencies.daggerHiltViewModel
-    kapt rootProject.ext.daggerHiltDependencies.daggerHiltCompiler
+    implementation "org.koin:koin-core:2.0.1"
+    implementation "org.koin:koin-android:2.0.1"
+    implementation "org.koin:koin-android-viewmodel:2.0.1"
+    implementation "org.koin:koin-android-architecture:0.8.2"
+    testImplementation "org.koin:koin-test:2.0.1"
 
     implementation rootProject.ext.navigationComponents.navigationFragment
     implementation rootProject.ext.navigationComponents.navigationUi

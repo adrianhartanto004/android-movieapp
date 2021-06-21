@@ -1,7 +1,6 @@
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
@@ -71,11 +70,11 @@ dependencies {
     implementation rootProject.ext.networkDependencies.glide
     kapt rootProject.ext.networkDependencies.glideCompiler
 
-    //Dagger Hilt
-    implementation rootProject.ext.daggerHiltDependencies.daggerHiltAndroid
-    kapt rootProject.ext.daggerHiltDependencies.daggerHiltAndroidCompiler
-    implementation rootProject.ext.daggerHiltDependencies.daggerHiltViewModel
-    kapt rootProject.ext.daggerHiltDependencies.daggerHiltCompiler
+    implementation "org.koin:koin-core:2.0.1"
+    implementation "org.koin:koin-android:2.0.1"
+    implementation "org.koin:koin-android-viewmodel:2.0.1"
+    implementation "org.koin:koin-android-architecture:0.8.2"
+    testImplementation "org.koin:koin-test:2.0.1"
 
     //retrofit
     implementation rootProject.ext.networkDependencies.retrofit
