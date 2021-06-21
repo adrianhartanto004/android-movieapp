@@ -20,12 +20,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeViewModel (
-    savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
     private val getGenresUseCase: GetGenresUseCase
-) : BaseViewModel(savedStateHandle) {
+) : BaseViewModel() {
 
     val popularMoviesLiveData: MutableLiveData<UIState<List<PopularMovies>>> = MutableLiveData()
     val nowPlayingMoviesLiveData: MutableLiveData<UIState<List<NowPlayingMovies>>> =

@@ -1,9 +1,9 @@
 package com.adrian.home.data.network.model.genre
 
 import com.adrian.home.domain.model.genre.GenreList
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class GenreListJson(
     val genres: List<GenreJson>
 )

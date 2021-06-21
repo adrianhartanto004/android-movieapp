@@ -1,17 +1,17 @@
 package com.adrian.home.data.network.model.popularmovies
 
 import com.adrian.home.domain.model.popularmovies.PopularMoviesList
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class PopularMovieListJson(
     val page: Int,
-    @Json(name = "results")
+    @SerialName("results")
     val results: List<PopularMoviesJson>,
-    @Json(name = "total_pages")
+    @SerialName("total_pages")
     val totalPages: Int,
-    @Json(name = "total_results")
+    @SerialName("total_results")
     val totalResults: Int
 )
 

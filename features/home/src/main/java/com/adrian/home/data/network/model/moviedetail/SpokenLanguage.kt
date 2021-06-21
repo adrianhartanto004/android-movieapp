@@ -1,14 +1,14 @@
 package com.adrian.home.data.network.model.moviedetail
 
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class SpokenLanguage(
-    @Json(name = "english_name")
+    @SerialName("english_name")
     val englishName: String?,
-    @Json(name = "iso_639_1")
+    @SerialName("iso_639_1")
     val iso6391: String?,
     val name: String?
 )

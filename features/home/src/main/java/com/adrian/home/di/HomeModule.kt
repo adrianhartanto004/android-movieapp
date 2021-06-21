@@ -3,25 +3,17 @@ package com.adrian.home.di
 import android.app.Application
 import androidx.room.Room
 import com.adrian.abstraction.common.data.SharedDao
-import com.adrian.abstraction.common.network.RetrofitClient
+import com.adrian.abstraction.common.network.KtorClientFactory
+import com.adrian.abstraction.common.network.KtorClientFactoryImpl
 import com.adrian.home.data.HomeRepositoryImpl
 import com.adrian.home.data.database.HomeDao
 import com.adrian.home.data.database.HomeDatabase
-import com.adrian.home.data.network.service.HomeRetrofitService
+import com.adrian.home.data.network.service.HomeApi
 import com.adrian.home.domain.repository.HomeRepository
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 val homeModule = module {
-
-    fun provideRetrofit(): RetrofitClient = RetrofitClient
-
-    fun provideHomeRetrofitService(
-        retrofitClient: RetrofitClient,
-        context: Application
-    ): HomeRetrofitService =
-        retrofitClient.retrofit(context)
-            .create(HomeRetrofitService::class.java)
 
     fun provideDatabase(context: Application): HomeDatabase {
         return Room.databaseBuilder(
@@ -35,16 +27,18 @@ val homeModule = module {
         return homeDatabase.homeDao()
     }
 
+    fun provideHomeApi(httpClient: KtorClientFactory): HomeApi = HomeApi(httpClient.createClient())
+
     fun provideRepository(
-        homeRetrofitService: HomeRetrofitService,
+        homeApi: HomeApi,
         homeDao: HomeDao,
         sharedDao: SharedDao
     ): HomeRepository {
-        return HomeRepositoryImpl(homeRetrofitService, homeDao, sharedDao)
+        return HomeRepositoryImpl(homeApi, homeDao, sharedDao)
     }
 
-    single { provideRetrofit() }
-    single { provideHomeRetrofitService(get(), androidApplication()) }
+    factory<KtorClientFactory> { KtorClientFactoryImpl() }
+    single { provideHomeApi(get()) }
     single { provideDatabase(androidApplication()) }
     single { provideDao(get()) }
     single { provideRepository(get(), get(), get()) }

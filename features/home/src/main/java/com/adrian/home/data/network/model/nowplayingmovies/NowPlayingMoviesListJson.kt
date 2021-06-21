@@ -1,17 +1,17 @@
 package com.adrian.home.data.network.model.nowplayingmovies
 
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class NowPlayingMoviesListJson(
     val page: Int,
-    @Json(name = "results")
+    @SerialName("results")
     val results: List<NowPlayingMoviesJson>,
-    @Json(name = "total_pages")
+    @SerialName("total_pages")
     val totalPages: Int,
-    @Json(name = "total_results")
+    @SerialName("total_results")
     val totalResults: Int
 )
 

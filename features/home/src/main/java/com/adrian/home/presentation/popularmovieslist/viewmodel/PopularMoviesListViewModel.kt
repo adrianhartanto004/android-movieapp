@@ -2,7 +2,6 @@ package com.adrian.home.presentation.popularmovieslist.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.adrian.abstraction.common.network.enum.ErrorStatus
 import com.adrian.abstraction.common.state.UIState
@@ -15,10 +14,9 @@ import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
 import kotlinx.coroutines.launch
 
 class PopularMoviesListViewModel(
-    savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase
-) : BaseViewModel(savedStateHandle) {
+) : BaseViewModel() {
 
     var totalPage: Int? = 0
 

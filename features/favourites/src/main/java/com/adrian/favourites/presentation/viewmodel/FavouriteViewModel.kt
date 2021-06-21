@@ -2,7 +2,6 @@ package com.adrian.favourites.presentation.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.adrian.abstraction.common.domain.model.FavouriteMovie
 import com.adrian.abstraction.common.network.enum.ErrorStatus
@@ -15,10 +14,9 @@ import com.adrian.favourites.domain.usecase.GetFavouriteMoviesUseCase
 import kotlinx.coroutines.launch
 
 class FavouriteViewModel(
-    savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getFavouriteMoviesUseCase: GetFavouriteMoviesUseCase
-) : BaseViewModel(savedStateHandle) {
+) : BaseViewModel() {
 
     val favouriteMoviesLiveData: MutableLiveData<UIState<List<FavouriteMovie>>> = MutableLiveData()
 

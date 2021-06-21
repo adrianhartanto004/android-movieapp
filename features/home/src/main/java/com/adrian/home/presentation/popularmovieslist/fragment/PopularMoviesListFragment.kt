@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,12 +21,14 @@ import com.adrian.home.databinding.FragmentPopularMoviesListBinding
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.presentation.popularmovieslist.adapter.PopularMoviesListAdapter
 import com.adrian.home.presentation.popularmovieslist.viewmodel.PopularMoviesListViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_list), SwipeRefreshLayout.OnRefreshListener {
+class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_list),
+    SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var binding: FragmentPopularMoviesListBinding
 
-    private val viewModel: PopularMoviesListViewModel by viewModels()
+    private val popularMoviesListViewModel: PopularMoviesListViewModel by viewModel()
 
     private lateinit var popularMoviesListAdapter: PopularMoviesListAdapter
 
@@ -41,7 +42,7 @@ class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_
             binding.swipeRefresh.isRefreshing = false
             if (data != null) {
                 popularMoviesListAdapter.addMoreData(data ?: listOf())
-                recyclerViewLoadMoreListener.updateStateAfterGetData(viewModel.totalPage)
+                recyclerViewLoadMoreListener.updateStateAfterGetData(popularMoviesListViewModel.totalPage)
             } else {
             }
             recyclerViewLoadMoreListener.hideRecyclerViewLoading()
@@ -67,9 +68,9 @@ class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_
 
     override fun onStart() {
         super.onStart()
-        if (!viewModel.apiDataReceived) {
+        if (!popularMoviesListViewModel.apiDataReceived) {
             reloadPage()
-            viewModel.apiDataReceived = true
+            popularMoviesListViewModel.apiDataReceived = true
         }
     }
 
@@ -79,7 +80,7 @@ class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_
         init()
     }
 
-    private fun setRecyclerViewAdapter(){
+    private fun setRecyclerViewAdapter() {
         popularMoviesListAdapter = PopularMoviesListAdapter()
         binding.apply {
             rvList.layoutManager = LinearLayoutManager(context)
@@ -91,18 +92,20 @@ class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_
         setSwipeToRefresh()
         setRecyclerViewAdapter()
         setRecyclerViewLoadMore()
-        observe(viewModel.popularMoviesLiveData, popularMoviesObserver)
+        observe(popularMoviesListViewModel.popularMoviesLiveData, popularMoviesObserver)
 
         popularMoviesListAdapter.setOnItemClickedListener {
-            val navDirections = PopularMoviesListFragmentDirections.actionPopularMoviesToMovieDetail(it.id)
+            val navDirections =
+                PopularMoviesListFragmentDirections.actionPopularMoviesToMovieDetail(it.id)
             findNavController().navigate(navDirections)
         }
     }
 
     private fun createRecyclerViewLoadMoreListener(): RecyclerViewLoadMoreListener {
-        return object : RecyclerViewLoadMoreListener(binding.rvList.layoutManager as LinearLayoutManager) {
+        return object :
+            RecyclerViewLoadMoreListener(binding.rvList.layoutManager as LinearLayoutManager) {
             override fun loadMoreData(currentPage: Int) {
-                viewModel.getPopularMovies(currentPage)
+                popularMoviesListViewModel.getPopularMovies(currentPage)
             }
         }
     }
@@ -122,9 +125,9 @@ class PopularMoviesListFragment : BaseFragment(R.layout.fragment_popular_movies_
 
     private fun reloadPage() {
         recyclerViewLoadMoreListener.resetState()
-        viewModel.totalPage = 0
+        popularMoviesListViewModel.totalPage = 0
         popularMoviesListAdapter.clearAllElements()
-        viewModel.getPopularMovies(1)
+        popularMoviesListViewModel.getPopularMovies(1)
     }
 
     override fun onRefresh() {

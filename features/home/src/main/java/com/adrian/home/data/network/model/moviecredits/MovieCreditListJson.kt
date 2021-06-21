@@ -1,8 +1,8 @@
 package com.adrian.home.data.network.model.moviecredits
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MovieCreditListJson(
     val id: Int,
     val cast: List<Cast>,

@@ -6,9 +6,6 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 
 @Entity(tableName = "nowPlayingMovies")
 @TypeConverters(IntConverter::class)
@@ -55,15 +52,27 @@ internal fun List<NowPlayingMoviesEntity>.toDomainModel() =
         this.size
     )
 
-internal class IntConverter {
-    private val type = Types.newParameterizedType(List::class.java, Integer::class.java)
-    private val adapter: JsonAdapter<List<Int>> = Moshi.Builder().build().adapter(type)
+class IntConverter {
+    @TypeConverter
+    fun gettingListFromString(genreIds: String): List<Int> {
+        val list = mutableListOf<Int>()
+
+        val array = genreIds.split(",".toRegex()).dropLastWhile {
+            it.isEmpty()
+        }.toTypedArray()
+
+        for (s in array) {
+            if (s.isNotEmpty()) {
+                list.add(s.toInt())
+            }
+        }
+        return list
+    }
 
     @TypeConverter
-    fun intToList(data: String?) =
-        data?.let { adapter.fromJson(it) } ?: listOf()
-
-    @TypeConverter
-    fun listToInt(someObjects: List<Int>): String? =
-        adapter.toJson(someObjects)
+    fun writingStringFromList(list: List<Int>): String {
+        var genreIds = ""
+        for (i in list) genreIds += ",$i"
+        return genreIds
+    }
 }

@@ -1,13 +1,13 @@
 package com.adrian.home.data.network.model.moviedetail
 
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ProductionCompany(
     val id: Int?,
     val name: String?,
-    @Json(name = "origin_country")
+    @SerialName("origin_country")
     val originCountry: String?
 )

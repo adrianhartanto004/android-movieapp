@@ -11,12 +11,6 @@ ext {
     BASE_IMAGE_URL = "\"https://image.tmdb.org/t/p/w500/\""
 
     networkDependencies = [
-            retrofit              : "com.squareup.retrofit2:retrofit:${retrofit_version}",
-            retrofitGsonConverter : "com.squareup.retrofit2:converter-gson:${retrofit_version}",
-            retrofitMoshiConverter: "com.squareup.retrofit2:converter-moshi:${retrofit_version}",
-            gson                  : "com.google.code.gson:gson:2.8.5",
-            moshiKotlin           : "com.squareup.moshi:moshi-kotlin:${moshi_version}",
-            moshiCodegen          : "com.squareup.moshi:moshi-kotlin-codegen:${moshi_version}",
             okhttp                : "com.squareup.okhttp3:okhttp:${okhttp_version}",
             loggingInterceptor    : "com.squareup.okhttp3:logging-interceptor:${okhttp_version}",
             glide                 : "com.github.bumptech.glide:glide:${glide_version}",

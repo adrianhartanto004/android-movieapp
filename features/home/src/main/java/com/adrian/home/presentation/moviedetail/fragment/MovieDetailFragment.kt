@@ -1,10 +1,11 @@
 package com.adrian.home.presentation.moviedetail.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,14 +26,14 @@ import com.adrian.home.databinding.FragmentMovieDetailBinding
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
 import com.adrian.home.presentation.moviedetail.adapter.*
 import com.adrian.home.presentation.moviedetail.viewmodel.MovieDetailViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var binding: FragmentMovieDetailBinding
 
-    private val viewModel: MovieDetailViewModel by viewModels()
-
+    private val movieDetailViewModel: MovieDetailViewModel by viewModel()
     private lateinit var movieDetailStorylineAdapter: MovieDetailStorylineAdapter
     private lateinit var movieDetailGenreAdapter: MovieDetailGenreAdapter
     private lateinit var movieDetailCastAdapter: MovieDetailCastAdapter
@@ -46,6 +47,8 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     private lateinit var concatAdapter: ConcatAdapter
 
     private var isLiked = false
+
+    val args: MovieDetailFragmentArgs by navArgs()
 
     private val movieDetailObserver = Observer<UIState<MovieDetailResponseJson>> { state ->
         state onLoading {
@@ -130,7 +133,9 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
         state onLoading {
         }
         state onSuccess {
-            viewModel.isFavouriteMovieExist(viewModel.currentFavouriteMovie?.id ?: 0)
+            movieDetailViewModel.isFavouriteMovieExist(
+                movieDetailViewModel.currentFavouriteMovie?.id ?: 0
+            )
         }
         state onFailure {
             showLongToast(message)
@@ -149,10 +154,10 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
 
     override fun onStart() {
         super.onStart()
-        if (!viewModel.apiDataReceived) {
-            viewModel.loadData()
-            viewModel.apiDataReceived = true
-        }
+//        if (!movieDetailViewModel.apiDataReceived) {
+            movieDetailViewModel.loadData(args.movieId)
+//            movieDetailViewModel.apiDataReceived = true
+//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -164,13 +169,13 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     private fun init() {
         setSwipeToRefresh()
         setRecyclerView()
-        observe(viewModel.movieDetailLiveData, movieDetailObserver)
-        observe(viewModel.movieCreditsLiveData, movieCreditsObserver)
-        observe(viewModel.moviePhotosLiveData, moviePhotosObserver)
-        observe(viewModel.recommendedMoviesLiveData, recommendedMoviesObserver)
-        observe(viewModel.authorReviewsLiveData, authorReviewsObserver)
-        observe(viewModel.isFavouriteMovieExistLiveData, isFavouriteMovieExistObserver)
-        observe(viewModel.addFavouriteMovieLiveData, addFavouriteMovieObserver)
+        observe(movieDetailViewModel.movieDetailLiveData, movieDetailObserver)
+        observe(movieDetailViewModel.movieCreditsLiveData, movieCreditsObserver)
+        observe(movieDetailViewModel.moviePhotosLiveData, moviePhotosObserver)
+        observe(movieDetailViewModel.recommendedMoviesLiveData, recommendedMoviesObserver)
+        observe(movieDetailViewModel.authorReviewsLiveData, authorReviewsObserver)
+        observe(movieDetailViewModel.isFavouriteMovieExistLiveData, isFavouriteMovieExistObserver)
+        observe(movieDetailViewModel.addFavouriteMovieLiveData, addFavouriteMovieObserver)
         setHasOptionsMenu(true)
     }
 
@@ -223,13 +228,14 @@ class MovieDetailFragment : BaseFragment(R.layout.fragment_movie_detail),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_like_movie -> {
-                viewModel.addFavouriteMovie(viewModel.currentFavouriteMovie?.toFavouriteMovie()!!)
+                movieDetailViewModel.addFavouriteMovie(movieDetailViewModel.currentFavouriteMovie?.toFavouriteMovie()!!)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onRefresh() {
-        viewModel.loadData()
+        Log.e("movieIdnya", args.movieId.toString())
+        movieDetailViewModel.loadData(args.movieId)
     }
 }

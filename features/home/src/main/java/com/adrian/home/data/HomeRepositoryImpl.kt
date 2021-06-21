@@ -20,7 +20,7 @@ import com.adrian.home.data.network.model.nowplayingmovies.toEntity
 import com.adrian.home.data.network.model.popularmovies.toDomainModel
 import com.adrian.home.data.network.model.popularmovies.toEntity
 import com.adrian.home.data.network.model.recommendedmovies.toDomainModel
-import com.adrian.home.data.network.service.HomeRetrofitService
+import com.adrian.home.data.network.service.HomeApi
 import com.adrian.home.domain.model.genre.Genre
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 import com.adrian.home.domain.model.popularmovies.PopularMoviesList
@@ -31,14 +31,14 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class HomeRepositoryImpl(
-    private val homeRetrofitService: HomeRetrofitService,
+    private val homeApi: HomeApi,
     private val homeDao: HomeDao,
     private val sharedDao: SharedDao
 ) : HomeRepository {
     override suspend fun getPopularMovies(page: Int): PopularMoviesList {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getPopularMovies(page) }) {
+                safeApiCall(Dispatchers.IO) { homeApi.getPopularMovies(page) }) {
                 is ApiResult.Success -> {
                     val popularMovies = response.value
                     popularMovies.results
@@ -62,7 +62,7 @@ class HomeRepositoryImpl(
     override suspend fun getNowPlayingMovies(page: Int): NowPlayingMoviesList {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getNowPlayingMovies(page) }) {
+                safeApiCall(Dispatchers.IO) { homeApi.getNowPlayingMovies(page) }) {
                 is ApiResult.Success -> {
                     val nowPlayingMovies = response.value
                     nowPlayingMovies.results
@@ -90,7 +90,7 @@ class HomeRepositoryImpl(
             } else {
                 return when (
                     val response =
-                        safeApiCall(Dispatchers.IO) { homeRetrofitService.getGenres() }) {
+                        safeApiCall(Dispatchers.IO) { homeApi.getGenres() }) {
                     is ApiResult.Success -> {
                         val genres = response.value.genres
                         genres
@@ -115,7 +115,7 @@ class HomeRepositoryImpl(
     override suspend fun getMovieDetail(movieId: Int): MovieDetailResponseJson? {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getMovieDetail(movieId) }) {
+                safeApiCall(Dispatchers.IO) { homeApi.getMovieDetail(movieId) }) {
                 is ApiResult.Success -> {
                     response.value
                 }
@@ -134,7 +134,7 @@ class HomeRepositoryImpl(
     override suspend fun getMovieCredits(movieId: Int): MovieCreditListJson? {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getMovieCredits(movieId) }) {
+                safeApiCall(Dispatchers.IO) { homeApi.getMovieCredits(movieId) }) {
                 is ApiResult.Success -> {
                     response.value
                 }
@@ -153,7 +153,7 @@ class HomeRepositoryImpl(
     override suspend fun getMoviePhotos(movieId: Int): MoviesPhotoListJson? {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getMoviePhotos(movieId) }) {
+                safeApiCall(Dispatchers.IO) { homeApi.getMoviePhotos(movieId) }) {
                 is ApiResult.Success -> {
                     response.value
                 }
@@ -172,7 +172,12 @@ class HomeRepositoryImpl(
     override suspend fun getRecommendedMovies(movieId: Int, page: Int): RecommendedMoviesList? {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getRecommendedMovies(movieId, page) }) {
+                safeApiCall(Dispatchers.IO) {
+                    homeApi.getRecommendedMovies(
+                        movieId,
+                        page
+                    )
+                }) {
                 is ApiResult.Success -> {
                     response.value.toDomainModel()
                 }
@@ -191,7 +196,12 @@ class HomeRepositoryImpl(
     override suspend fun getAuthorReviews(movieId: Int, page: Int): AuthorReviewListJson? {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getAuthorReviews(movieId, page) }) {
+                safeApiCall(Dispatchers.IO) {
+                    homeApi.getAuthorReviews(
+                        movieId,
+                        page
+                    )
+                }) {
                 is ApiResult.Success -> {
                     response.value
                 }

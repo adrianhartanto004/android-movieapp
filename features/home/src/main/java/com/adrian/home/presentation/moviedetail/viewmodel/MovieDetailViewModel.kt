@@ -2,7 +2,6 @@ package com.adrian.home.presentation.moviedetail.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.adrian.abstraction.common.domain.model.FavouriteMovie
 import com.adrian.abstraction.common.network.enum.ErrorStatus
@@ -17,11 +16,9 @@ import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.data.network.model.moviephoto.Backdrop
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
 import com.adrian.home.domain.usecase.*
-import com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragmentArgs
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(
-    savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
@@ -30,7 +27,7 @@ class MovieDetailViewModel(
     private val getAuthorReviewsUseCase: GetAuthorReviewsUseCase,
     private val addFavouriteMovieUseCase: AddFavouriteMovieUseCase,
     private val getIsFavouriteMovieExistUseCase: GetIsFavouriteMovieExistUseCase
-) : BaseViewModel(savedStateHandle) {
+) : BaseViewModel() {
 
     val movieDetailLiveData: MutableLiveData<UIState<MovieDetailResponseJson>> = MutableLiveData()
     val movieCreditsLiveData: MutableLiveData<UIState<MovieCreditListJson>> = MutableLiveData()
@@ -42,11 +39,10 @@ class MovieDetailViewModel(
     val isFavouriteMovieExistLiveData: MutableLiveData<UIState<Boolean>> = MutableLiveData()
 
     var currentFavouriteMovie: MovieDetailResponseJson? = MovieDetailResponseJson()
-    private val args: MovieDetailFragmentArgs by navArgs()
 
-    private fun getMovieDetail() {
+    private fun getMovieDetail(movieId: Int) {
         viewModelScope.launch {
-            getMovieDetailUseCase.getMovieDetail(args.movieId).also { resultState ->
+            getMovieDetailUseCase.getMovieDetail(movieId).also { resultState ->
                 movieDetailLiveData.value = UIState.Loading
                 resultState onSuccess {
                     currentFavouriteMovie = data
@@ -64,9 +60,9 @@ class MovieDetailViewModel(
         }
     }
 
-    private fun getMovieCredits() {
+    private fun getMovieCredits(movieId: Int) {
         viewModelScope.launch {
-            getMovieCreditsUseCase.getMovieCredits(args.movieId).also { resultState ->
+            getMovieCreditsUseCase.getMovieCredits(movieId).also { resultState ->
                 movieCreditsLiveData.value = UIState.Loading
                 resultState onSuccess {
                     movieCreditsLiveData.value = UIState.Success(data)
@@ -82,9 +78,9 @@ class MovieDetailViewModel(
         }
     }
 
-    private fun getMoviePhotos() {
+    private fun getMoviePhotos(movieId: Int) {
         viewModelScope.launch {
-            getMoviePhotosUseCase.getMoviePhotos(args.movieId).also { resultState ->
+            getMoviePhotosUseCase.getMoviePhotos(movieId).also { resultState ->
                 moviePhotosLiveData.value = UIState.Loading
                 resultState onSuccess {
                     moviePhotosLiveData.value = UIState.Success(data?.backdrops)
@@ -100,9 +96,9 @@ class MovieDetailViewModel(
         }
     }
 
-    fun getRecommendedMovies(page: Int) {
+    fun getRecommendedMovies(movieId: Int, page: Int) {
         viewModelScope.launch {
-            getRecommendedMoviesUseCase.getRecommendedMovies(args.movieId, page)
+            getRecommendedMoviesUseCase.getRecommendedMovies(movieId, page)
                 .also { resultState ->
                     recommendedMoviesLiveData.value = UIState.Loading
                     resultState onSuccess {
@@ -119,9 +115,9 @@ class MovieDetailViewModel(
         }
     }
 
-    fun getAuthorReviews(page: Int) {
+    fun getAuthorReviews(movieId: Int, page: Int) {
         viewModelScope.launch {
-            getAuthorReviewsUseCase.getAuthorReviews(args.movieId, page).also { resultState ->
+            getAuthorReviewsUseCase.getAuthorReviews(movieId, page).also { resultState ->
                 authorReviewsLiveData.value = UIState.Loading
                 resultState onSuccess {
                     authorReviewsLiveData.value = UIState.Success(data)
@@ -174,11 +170,11 @@ class MovieDetailViewModel(
         }
     }
 
-    fun loadData() {
-        getMovieDetail()
-        getMovieCredits()
-        getMoviePhotos()
-        getRecommendedMovies(1)
-        getAuthorReviews(1)
+    fun loadData(movieId: Int) {
+        getMovieDetail(movieId)
+        getMovieCredits(movieId)
+        getMoviePhotos(movieId)
+        getRecommendedMovies(movieId, 1)
+        getAuthorReviews(movieId, 1)
     }
 }

@@ -1,19 +1,19 @@
 package com.adrian.home.data.network.model.authorreview
 
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class AuthorReview(
     val author: String?,
-    @Json(name = "author_details")
+    @SerialName("author_details")
     val authorDetails: AuthorDetails?,
     val content: String?,
-    @Json(name = "created_at")
+    @SerialName("created_at")
     val createdAt: String?,
     val id: String?,
-    @Json(name = "updated_at")
+    @SerialName("updated_at")
     val updatedAt: String?,
     val url: String?
 )

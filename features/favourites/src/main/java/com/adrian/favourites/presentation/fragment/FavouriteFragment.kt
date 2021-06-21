@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,12 +19,13 @@ import com.adrian.favourites.R
 import com.adrian.favourites.databinding.FragmentFavouriteBinding
 import com.adrian.favourites.presentation.adapter.FavouriteMoviesAdapter
 import com.adrian.favourites.presentation.viewmodel.FavouriteViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
 
     private lateinit var binding: FragmentFavouriteBinding
 
-    private val viewModel: FavouriteViewModel by viewModels()
+    private val favouriteViewModel: FavouriteViewModel by viewModel()
 
     private lateinit var favouriteMoviesAdapter: FavouriteMoviesAdapter
 
@@ -63,8 +63,8 @@ class FavouriteFragment : BaseFragment(R.layout.fragment_favourite) {
             rvList.adapter = favouriteMoviesAdapter
         }
 
-        observe(viewModel.favouriteMoviesLiveData, favouriteMoviesObserver)
-        viewModel.loadData()
+        observe(favouriteViewModel.favouriteMoviesLiveData, favouriteMoviesObserver)
+        favouriteViewModel.loadData()
 
         favouriteMoviesAdapter.setOnItemClickedListener {
             val uri = Uri.parse("movieApp://featureMovieDetail/?movieId=${it.id}")

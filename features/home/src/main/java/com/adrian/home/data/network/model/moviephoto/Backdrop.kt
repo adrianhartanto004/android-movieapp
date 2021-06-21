@@ -1,10 +1,10 @@
 package com.adrian.home.data.network.model.moviephoto
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class Backdrop(
-    @Json(name = "file_path")
+    @SerialName("file_path")
     val filePath: String?
 )

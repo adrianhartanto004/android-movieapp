@@ -2,9 +2,9 @@ package com.adrian.home.data.network.model.genre
 
 import com.adrian.home.data.database.model.genre.GenreEntity
 import com.adrian.home.domain.model.genre.Genre
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class GenreJson(
     val id: Int,
     val name: String

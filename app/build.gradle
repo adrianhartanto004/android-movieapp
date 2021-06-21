@@ -60,11 +60,25 @@ dependencies {
     implementation rootProject.ext.supportLibDependencies.constraintLayout
     implementation rootProject.ext.supportLibDependencies.googleMaterialDesign
 
-    implementation "org.koin:koin-core:2.0.1"
-    implementation "org.koin:koin-android:2.0.1"
-    implementation "org.koin:koin-android-viewmodel:2.0.1"
-    implementation "org.koin:koin-android-architecture:0.8.2"
-    testImplementation "org.koin:koin-test:2.0.1"
+    // Koin for Kotlin
+    implementation "io.insert-koin:koin-core:$koin_version"
+// Koin extended & experimental features
+    implementation "io.insert-koin:koin-core-ext:$koin_version"
+// Koin for Unit tests
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+
+// Koin AndroidX Scope features
+    implementation "io.insert-koin:koin-androidx-scope:$koin_version"
+// Koin AndroidX ViewModel features
+    implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
+// Koin AndroidX Fragment features
+    implementation "io.insert-koin:koin-androidx-fragment:$koin_version"
+// Koin AndroidX WorkManager
+//    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+// Koin AndroidX Jetpack Compose
+//    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+// Koin AndroidX Experimental features
+    implementation "io.insert-koin:koin-androidx-ext:$koin_version"
 
     implementation rootProject.ext.navigationComponents.navigationFragment
     implementation rootProject.ext.navigationComponents.navigationUi
