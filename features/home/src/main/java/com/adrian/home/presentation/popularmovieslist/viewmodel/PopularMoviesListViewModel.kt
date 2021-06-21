@@ -12,12 +12,9 @@ import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class PopularMoviesListViewModel @Inject constructor(
+class PopularMoviesListViewModel(
     savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase

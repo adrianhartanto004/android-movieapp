@@ -6,7 +6,7 @@ import com.adrian.home.domain.repository.HomeRepository
 import java.io.IOException
 import javax.inject.Inject
 
-class GetNowPlayingMoviesUseCase @Inject constructor(private val homeRepository: HomeRepository) {
+class GetNowPlayingMoviesUseCase  (private val homeRepository: HomeRepository) {
     suspend fun getNowPlayingMovies(page: Int): UseCaseResult<NowPlayingMoviesList> {
         return try {
             UseCaseResult.Success(homeRepository.getNowPlayingMovies(page))

@@ -12,12 +12,9 @@ import com.adrian.abstraction.common.state.onSuccess
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.favourites.R
 import com.adrian.favourites.domain.usecase.GetFavouriteMoviesUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class FavouriteViewModel @Inject constructor(
+class FavouriteViewModel(
     savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getFavouriteMoviesUseCase: GetFavouriteMoviesUseCase

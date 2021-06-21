@@ -9,22 +9,13 @@ import com.adrian.home.data.database.HomeDao
 import com.adrian.home.data.database.HomeDatabase
 import com.adrian.home.data.network.service.HomeRetrofitService
 import com.adrian.home.domain.repository.HomeRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object HomeModule {
+val homeModule = module {
 
-    @Singleton
-    @Provides
     fun provideRetrofit(): RetrofitClient = RetrofitClient
 
-    @Provides
-    @Singleton
     fun provideHomeRetrofitService(
         retrofitClient: RetrofitClient,
         context: Application
@@ -32,9 +23,7 @@ object HomeModule {
         retrofitClient.retrofit(context)
             .create(HomeRetrofitService::class.java)
 
-    @Provides
-    @Singleton
-    internal fun provideDatabase(context: Application): HomeDatabase {
+    fun provideDatabase(context: Application): HomeDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             HomeDatabase::class.java,
@@ -42,18 +31,21 @@ object HomeModule {
         ).allowMainThreadQueries().build()
     }
 
-    @Provides
-    internal fun provideDao(homeDatabase: HomeDatabase): HomeDao {
+    fun provideDao(homeDatabase: HomeDatabase): HomeDao {
         return homeDatabase.homeDao()
     }
 
-    @Singleton
-    @Provides
-    internal fun provideRepository(
+    fun provideRepository(
         homeRetrofitService: HomeRetrofitService,
         homeDao: HomeDao,
         sharedDao: SharedDao
     ): HomeRepository {
         return HomeRepositoryImpl(homeRetrofitService, homeDao, sharedDao)
     }
+
+    single { provideRetrofit() }
+    single { provideHomeRetrofitService(get(), androidApplication()) }
+    single { provideDatabase(androidApplication()) }
+    single { provideDao(get()) }
+    single { provideRepository(get(), get(), get()) }
 }

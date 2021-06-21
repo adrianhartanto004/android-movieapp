@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 
-class FavouriteRepositoryImpl @Inject constructor(private val sharedDao: SharedDao) :
+class FavouriteRepositoryImpl  (private val sharedDao: SharedDao) :
     FavouriteRepository {
     override suspend fun getAllFavouriteMovies(): List<FavouriteMovie> {
         return try {

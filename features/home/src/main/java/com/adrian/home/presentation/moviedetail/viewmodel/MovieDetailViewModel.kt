@@ -18,12 +18,9 @@ import com.adrian.home.data.network.model.moviephoto.Backdrop
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMovies
 import com.adrian.home.domain.usecase.*
 import com.adrian.home.presentation.moviedetail.fragment.MovieDetailFragmentArgs
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MovieDetailViewModel @Inject constructor(
+class MovieDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
@@ -38,7 +35,8 @@ class MovieDetailViewModel @Inject constructor(
     val movieDetailLiveData: MutableLiveData<UIState<MovieDetailResponseJson>> = MutableLiveData()
     val movieCreditsLiveData: MutableLiveData<UIState<MovieCreditListJson>> = MutableLiveData()
     val moviePhotosLiveData: MutableLiveData<UIState<List<Backdrop>>> = MutableLiveData()
-    val recommendedMoviesLiveData: MutableLiveData<UIState<List<RecommendedMovies>>> = MutableLiveData()
+    val recommendedMoviesLiveData: MutableLiveData<UIState<List<RecommendedMovies>>> =
+        MutableLiveData()
     val authorReviewsLiveData: MutableLiveData<UIState<AuthorReviewListJson>> = MutableLiveData()
     val addFavouriteMovieLiveData: MutableLiveData<UIState<Boolean>> = MutableLiveData()
     val isFavouriteMovieExistLiveData: MutableLiveData<UIState<Boolean>> = MutableLiveData()
@@ -104,19 +102,20 @@ class MovieDetailViewModel @Inject constructor(
 
     fun getRecommendedMovies(page: Int) {
         viewModelScope.launch {
-            getRecommendedMoviesUseCase.getRecommendedMovies(args.movieId, page).also { resultState ->
-                recommendedMoviesLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    recommendedMoviesLiveData.value = UIState.Success(data?.results)
+            getRecommendedMoviesUseCase.getRecommendedMovies(args.movieId, page)
+                .also { resultState ->
+                    recommendedMoviesLiveData.value = UIState.Loading
+                    resultState onSuccess {
+                        recommendedMoviesLiveData.value = UIState.Success(data?.results)
+                    }
+                    resultState onError {
+                        recommendedMoviesLiveData.value =
+                            UIState.Failure(
+                                ErrorStatus.APPLICATION_ERROR,
+                                application.getString(R.string.default_application_error)
+                            )
+                    }
                 }
-                resultState onError {
-                    recommendedMoviesLiveData.value =
-                        UIState.Failure(
-                            ErrorStatus.APPLICATION_ERROR,
-                            application.getString(R.string.default_application_error)
-                        )
-                }
-            }
         }
     }
 

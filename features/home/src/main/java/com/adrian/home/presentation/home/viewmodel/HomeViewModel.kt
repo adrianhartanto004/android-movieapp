@@ -16,12 +16,10 @@ import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.domain.usecase.GetGenresUseCase
 import com.adrian.home.domain.usecase.GetNowPlayingMoviesUseCase
 import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class HomeViewModel (
     savedStateHandle: SavedStateHandle,
     private val application: Application,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,

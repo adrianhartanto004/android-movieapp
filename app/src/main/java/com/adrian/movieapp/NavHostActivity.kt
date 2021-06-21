@@ -6,7 +6,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.adrian.abstraction.presentation.activity.BaseActivity
 import com.adrian.movieapp.databinding.ActivityNavHostBinding
-import dagger.hilt.android.AndroidEntryPoint
 
 class NavHostActivity : BaseActivity() {
 

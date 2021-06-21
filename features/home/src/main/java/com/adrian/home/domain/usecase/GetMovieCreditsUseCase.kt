@@ -6,7 +6,7 @@ import com.adrian.home.domain.repository.HomeRepository
 import java.io.IOException
 import javax.inject.Inject
 
-class GetMovieCreditsUseCase @Inject constructor(private val homeRepository: HomeRepository) {
+class GetMovieCreditsUseCase  (private val homeRepository: HomeRepository) {
     suspend fun getMovieCredits(movieId: Int): UseCaseResult<MovieCreditListJson> {
         return try {
             UseCaseResult.Success(homeRepository.getMovieCredits(movieId))

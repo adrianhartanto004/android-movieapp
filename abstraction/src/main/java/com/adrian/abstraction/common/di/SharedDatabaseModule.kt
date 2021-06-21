@@ -4,19 +4,12 @@ import android.app.Application
 import androidx.room.Room
 import com.adrian.abstraction.common.data.SharedDao
 import com.adrian.abstraction.common.data.SharedDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object SharedDatabaseModule {
+val sharedDatabaseModule = module {
 
-    @Provides
-    @Singleton
-    internal fun provideDatabase(context: Application): SharedDatabase {
+    fun provideSharedDatabase(context: Application): SharedDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             SharedDatabase::class.java,
@@ -24,8 +17,10 @@ object SharedDatabaseModule {
         ).allowMainThreadQueries().build()
     }
 
-    @Provides
-    internal fun provideDao(sharedDatabase: SharedDatabase): SharedDao {
+    fun provideSharedDao(sharedDatabase: SharedDatabase): SharedDao {
         return sharedDatabase.sharedDao()
     }
+
+    single { provideSharedDatabase(androidApplication()) }
+    single { provideSharedDao(get()) }
 }
