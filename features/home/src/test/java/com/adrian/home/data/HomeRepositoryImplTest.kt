@@ -8,7 +8,7 @@ import com.adrian.home.data.network.model.nowplayingmovies.toDomainModel
 import com.adrian.home.data.network.model.nowplayingmovies.toEntity
 import com.adrian.home.data.network.model.popularmovies.toDomainModel
 import com.adrian.home.data.network.model.popularmovies.toEntity
-import com.adrian.home.data.network.service.HomeRetrofitService
+import com.adrian.home.data.network.service.HomeApi
 import com.adrian.home.domain.TestData
 import com.adrian.test_util.BaseTest
 import io.mockk.MockKAnnotations
@@ -29,7 +29,7 @@ internal class HomeRepositoryImplTest : BaseTest() {
     // region helper fields----------------------------------------------
     // endregion helper fields-------------------------------------------
     @MockK
-    internal lateinit var serviceMock: HomeRetrofitService
+    internal lateinit var homeApiMock: HomeApi
 
     @MockK
     internal lateinit var homeDaoMock: HomeDao
@@ -41,13 +41,13 @@ internal class HomeRepositoryImplTest : BaseTest() {
 
     override fun setup() {
         MockKAnnotations.init(this)
-        sut = HomeRepositoryImpl(serviceMock, homeDaoMock, sharedDaoMock)
+        sut = HomeRepositoryImpl(homeApiMock, homeDaoMock, sharedDaoMock)
     }
 
     @Test
     fun `fetches PopularMoviesJson and maps to PopularMoviesList`() {
         //given
-        coEvery { serviceMock.getPopularMovies(1) } returns TestData.popularMovieListJson
+        coEvery { homeApiMock.getPopularMovies(1) } returns TestData.popularMovieListJson
         coEvery {
             homeDaoMock.addPopularMovies(any())
         } returns Unit
@@ -60,7 +60,7 @@ internal class HomeRepositoryImplTest : BaseTest() {
     @Test
     fun `fetches PopularMovies return data from database if offline`() {
         // given
-        coEvery { serviceMock.getPopularMovies(1) } throws IOException()
+        coEvery { homeApiMock.getPopularMovies(1) } throws IOException()
         coEvery { homeDaoMock.getAllPopularMovies() } returns TestData.popularMovieListJson.results.map { it.toEntity() }
         // when
         val result = runBlocking { sut.getPopularMovies(1) }
@@ -71,7 +71,7 @@ internal class HomeRepositoryImplTest : BaseTest() {
     @Test
     fun `fetches NowPlayingMoviesJson and maps to NowPlayingMoviesList`() {
         //given
-        coEvery { serviceMock.getNowPlayingMovies(1) } returns TestData.nowPlayingMoviesListJson
+        coEvery { homeApiMock.getNowPlayingMovies(1) } returns TestData.nowPlayingMoviesListJson
         coEvery {
             homeDaoMock.addNowPlayingMovies(any())
         } returns Unit
@@ -84,7 +84,7 @@ internal class HomeRepositoryImplTest : BaseTest() {
     @Test
     fun `fetches NowPlayingMovies return data from database if offline`() {
         // given
-        coEvery { serviceMock.getNowPlayingMovies(1) } throws IOException()
+        coEvery { homeApiMock.getNowPlayingMovies(1) } throws IOException()
         coEvery { homeDaoMock.getAllNowPlayingMovies() } returns TestData.nowPlayingMoviesListJson.results.map { it.toEntity() }
         // when
         val result = runBlocking { sut.getNowPlayingMovies(1) }
@@ -106,7 +106,7 @@ internal class HomeRepositoryImplTest : BaseTest() {
     fun `fetches GenresJson and maps to Genre`() {
         //given
         coEvery { homeDaoMock.getAllGenres() } returns listOf()
-        coEvery { serviceMock.getGenres() } returns TestData.genreJson
+        coEvery { homeApiMock.getGenres() } returns TestData.genreJson
         coEvery {
             homeDaoMock.addGenres(any())
         } returns Unit
@@ -120,7 +120,7 @@ internal class HomeRepositoryImplTest : BaseTest() {
     fun `fetches GenresJson return data from database if offline`() {
         // given
         coEvery { homeDaoMock.getAllGenres() } returns listOf()
-        coEvery { serviceMock.getGenres() } throws IOException()
+        coEvery { homeApiMock.getGenres() } throws IOException()
         coEvery { homeDaoMock.getAllGenres() } returns TestData.genreListJson.map { it.toEntity() }
         // when
         val result = runBlocking { sut.getGenres() }

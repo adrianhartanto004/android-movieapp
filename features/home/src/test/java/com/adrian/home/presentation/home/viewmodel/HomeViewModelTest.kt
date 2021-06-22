@@ -1,7 +1,6 @@
 package com.adrian.home.presentation.home.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.SavedStateHandle
 import com.adrian.abstraction.common.network.enum.ErrorStatus
 import com.adrian.abstraction.common.state.UIState
 import com.adrian.abstraction.common.state.UseCaseResult
@@ -33,9 +32,6 @@ internal class HomeViewModelTest : BaseTest() {
     internal lateinit var applicationMock: Application
 
     @MockK
-    internal lateinit var savedStateHandleMock: SavedStateHandle
-
-    @MockK
     internal lateinit var getPopularMoviesUseCaseMock: GetPopularMoviesUseCase
 
     @MockK
@@ -49,7 +45,6 @@ internal class HomeViewModelTest : BaseTest() {
     override fun setup() {
         MockKAnnotations.init(this)
         sut = HomeViewModel(
-            savedStateHandleMock,
             applicationMock,
             getPopularMoviesUseCaseMock,
             getNowPlayingMoviesUseCaseMock,
