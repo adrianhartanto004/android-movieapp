@@ -1,6 +1,8 @@
 # android-movieapp
-
-# Goals
+# For Ktor-Koin CIO Implementation
+* [Ktor-Koin Branch](https://github.com/adrianhartanto004/android-movieapp/tree/koin-ktor-implementation)
+   * Check out `KtorClientFactoryImpl.kt`, `HomeApi.kt`, and `di` package files
+# Master Branch Goals
 * Stack
     * Kotlin
     * Kotlin Coroutines
