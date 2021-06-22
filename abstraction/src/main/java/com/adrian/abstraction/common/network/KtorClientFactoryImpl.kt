@@ -1,5 +1,7 @@
 package com.adrian.abstraction.common.network
 
+import com.adrian.abstraction.common.network.constant.KeyProvider
+import com.adrian.abstraction.common.network.constant.UrlProvider
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
@@ -19,28 +21,30 @@ class KtorClientFactoryImpl : KtorClientFactory, KoinComponent {
             Json { isLenient = true; ignoreUnknownKeys = true }
         return HttpClient(CIO) {
             defaultRequest {
-//                url.host = UrlProvider.BASE_URL
-                url.protocol = URLProtocol.HTTPS
-//                this.parameter(API_PARAM, API_KEY)
+                url.takeFrom(URLBuilder().takeFrom(UrlProvider.BASE_URL).apply {
+                    encodedPath += url.encodedPath
+                })
+                contentType(ContentType.Application.Json)
+                parameter(KeyProvider.API_PARAM, KeyProvider.API_KEY)
             }
 
             expectSuccess = false
 
-            HttpResponseValidator {
-                validateResponse { response ->
+//            HttpResponseValidator {
+//                validateResponse { response ->
 //                    if (response.status.value >= 300) {
 //                        throw HttpResponseException(response, response.status)
 //                    }
-                }
-            }
+//                }
+//            }
 
             install(JsonFeature) {
                 serializer = KotlinxSerializer(nonStrictJson)
             }
 
-            install(DefaultRequest) {
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-            }
+//            install(DefaultRequest) {
+//                header(HttpHeaders.ContentType, ContentType.Application.Json)
+//            }
         }
     }
 }

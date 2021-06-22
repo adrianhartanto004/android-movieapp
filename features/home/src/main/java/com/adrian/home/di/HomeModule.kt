@@ -27,7 +27,7 @@ val homeModule = module {
         return homeDatabase.homeDao()
     }
 
-    fun provideHomeApi(httpClient: KtorClientFactory): HomeApi = HomeApi(httpClient.createClient())
+    fun provideHomeApi(httpClient: KtorClientFactory): HomeApi = HomeApi(httpClient)
 
     fun provideRepository(
         homeApi: HomeApi,
