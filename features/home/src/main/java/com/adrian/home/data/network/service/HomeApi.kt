@@ -1,6 +1,5 @@
 package com.adrian.home.data.network.service
 
-import android.util.Log
 import com.adrian.abstraction.common.network.KtorClientFactory
 import com.adrian.abstraction.common.network.constant.KeyProvider
 import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
@@ -18,7 +17,6 @@ class HomeApi(private val ktorClientFactory: KtorClientFactory) {
         ktorClientFactory.createClient().use {
             it.get("movie/popular") {
                 parameter("page", page)
-                Log.e("urlnyapak", this.url.toString())
             }
         }
 
