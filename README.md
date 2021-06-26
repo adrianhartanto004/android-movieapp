@@ -6,6 +6,7 @@
 * Stack
     * Kotlin
     * Kotlin Coroutines
+    * Dagger Hilt
     * Retrofit
     * Concat Adapter
     * Nested Recyclerview
