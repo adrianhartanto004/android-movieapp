@@ -8,8 +8,8 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class NowPlayingMoviesJson(
     val adult: Boolean,
-    @Json(name = "backdrop_path")
-    val backdropPath: String,
+//    @Json(name = "backdrop_path")
+//    val backdropPath: String,
     @Json(name = "genre_ids")
     val genreIds: List<Int>,
     val id: Int,
@@ -34,7 +34,7 @@ data class NowPlayingMoviesJson(
 internal fun NowPlayingMoviesJson.toEntity() =
     NowPlayingMoviesEntity(
         adult,
-        backdropPath,
+//        backdropPath,
         genreIds,
         id,
         originalLanguage,
@@ -52,7 +52,7 @@ internal fun NowPlayingMoviesJson.toEntity() =
 internal fun NowPlayingMoviesJson.toDomainModel() =
     NowPlayingMovies(
         adult,
-        backdropPath,
+//        backdropPath,
         genreIds,
         id,
         originalLanguage,

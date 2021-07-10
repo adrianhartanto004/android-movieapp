@@ -8,7 +8,7 @@ import com.adrian.home.domain.model.popularmovies.PopularMoviesList
 @Entity(tableName = "popularMovies")
 data class PopularMoviesEntity(
     val adult: Boolean,
-    val backdropPath: String,
+//    val backdropPath: String,
     @PrimaryKey(autoGenerate = false) val id: Int,
     val originalLanguage: String,
     val originalTitle: String,
@@ -25,7 +25,7 @@ data class PopularMoviesEntity(
 internal fun PopularMoviesEntity.toDomainModel() =
     PopularMovies(
         adult,
-        backdropPath,
+//        backdropPath,
         id,
         originalLanguage,
         originalTitle,

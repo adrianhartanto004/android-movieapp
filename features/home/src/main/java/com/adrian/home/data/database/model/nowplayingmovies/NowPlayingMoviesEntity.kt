@@ -14,7 +14,7 @@ import com.squareup.moshi.Types
 @TypeConverters(IntConverter::class)
 data class NowPlayingMoviesEntity(
     val adult: Boolean,
-    val backdropPath: String,
+//    val backdropPath: String,
     val genreIds: List<Int> = listOf(),
     @PrimaryKey(autoGenerate = false) val id: Int,
     val originalLanguage: String,
@@ -32,7 +32,7 @@ data class NowPlayingMoviesEntity(
 internal fun NowPlayingMoviesEntity.toDomainModel() =
     NowPlayingMovies(
         adult,
-        backdropPath,
+//        backdropPath,
         genreIds,
         id,
         originalLanguage,

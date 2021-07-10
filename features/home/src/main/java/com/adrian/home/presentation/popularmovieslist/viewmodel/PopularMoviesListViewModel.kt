@@ -13,6 +13,9 @@ import com.adrian.home.R
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,20 +32,20 @@ class PopularMoviesListViewModel @Inject constructor(
 
     fun getPopularMovies(page: Int) {
         viewModelScope.launch {
-            getPopularMoviesUseCase.getPopularMovies(page).also { resultState ->
-                popularMoviesLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    totalPage = data?.totalPages
-                    popularMoviesLiveData.value = UIState.Success(data?.results)
+            getPopularMoviesUseCase.getPopularMovies(page)
+                .onStart {
+                    popularMoviesLiveData.value = UIState.Loading
                 }
-                resultState onError {
+                .catch {
                     popularMoviesLiveData.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
                         )
                 }
-            }
+                .collect {
+                    popularMoviesLiveData.value = UIState.Success(it.results)
+                }
         }
     }
 

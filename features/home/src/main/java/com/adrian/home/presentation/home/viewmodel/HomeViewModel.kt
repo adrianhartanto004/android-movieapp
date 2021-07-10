@@ -17,6 +17,9 @@ import com.adrian.home.domain.usecase.GetGenresUseCase
 import com.adrian.home.domain.usecase.GetNowPlayingMoviesUseCase
 import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,55 +39,58 @@ class HomeViewModel @Inject constructor(
 
     fun getPopularMovies(page: Int) {
         viewModelScope.launch {
-            getPopularMoviesUseCase.getPopularMovies(page).also { resultState ->
-                popularMoviesLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    popularMoviesLiveData.value = UIState.Success(data?.results)
+            getPopularMoviesUseCase.getPopularMovies(page)
+                .onStart {
+                    popularMoviesLiveData.value = UIState.Loading
                 }
-                resultState onError {
+                .catch {
                     popularMoviesLiveData.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
                         )
                 }
-            }
+                .collect {
+                    popularMoviesLiveData.value = UIState.Success(it.results)
+                }
         }
     }
 
     fun getNowPlayingMovies(page: Int) {
         viewModelScope.launch {
-            getNowPlayingMoviesUseCase.getNowPlayingMovies(page).also { resultState ->
-                nowPlayingMoviesLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    nowPlayingMoviesLiveData.value = UIState.Success(data?.results)
+            getNowPlayingMoviesUseCase.getNowPlayingMovies(page)
+                .onStart {
+                    nowPlayingMoviesLiveData.value = UIState.Loading
                 }
-                resultState onError {
+                .catch {
                     nowPlayingMoviesLiveData.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
                         )
                 }
-            }
+                .collect {
+                    nowPlayingMoviesLiveData.value = UIState.Success(it.results)
+                }
         }
     }
 
     fun getGenres() {
         viewModelScope.launch {
-            getGenresUseCase.getGenres().also { resultState ->
-                genresLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    genresLiveData.value = UIState.Success(data)
+            getGenresUseCase.getGenres()
+                .onStart {
+                    genresLiveData.value = UIState.Loading
                 }
-                resultState onError {
+                .catch {
                     genresLiveData.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
                         )
                 }
-            }
+                .collect {
+                    genresLiveData.value = UIState.Success(it)
+                }
         }
     }
 

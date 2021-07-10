@@ -11,6 +11,8 @@ import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.domain.model.popularmovies.PopularMoviesList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 internal object TestData {
     val popularMoviesListData = listOf(
@@ -154,11 +156,16 @@ internal object TestData {
     val nowPlayingMoviesList = NowPlayingMoviesList(1, nowPlayingMoviesListData, 1, 2)
     val nowPlayingMoviesListJson = NowPlayingMoviesListJson(1, nowPlayingMoviesListDataJson, 1, 2)
 
-    val genresListData = listOf(
-        Genre(1, "Horror"),
-        Genre(2, "Action"),
-        Genre(3, "Comedy")
-    )
+    val genresListData: Flow<List<Genre>> = flow {
+        emit(
+            listOf(
+                Genre(1, "Horror"),
+                Genre(2, "Action"),
+                Genre(3, "Comedy")
+            )
+        )
+    }
+
     val genreListJson = listOf(
         GenreJson(1, "Horror"),
         GenreJson(2, "Action"),

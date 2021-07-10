@@ -39,18 +39,7 @@ internal class GetGenresUseCaseTest : BaseTest() {
         // when
         val result = runBlocking { sut.getGenres() }
         // then
-        assertEquals(result, UseCaseResult.Success(TestData.genresListData))
-    }
-
-    @Test
-    fun `repository throws an exception resultErrorReturned`() {
-        // given
-        val exception = IOException()
-        coEvery { repositoryMock.getGenres() } throws exception
-        // when
-        val result = runBlocking { sut.getGenres() }
-        // then
-        assertEquals(result, UseCaseResult.Error(exception))
+        assertEquals(result, TestData.genresListData)
     }
 
     // region helper methods---------------------------------------------
