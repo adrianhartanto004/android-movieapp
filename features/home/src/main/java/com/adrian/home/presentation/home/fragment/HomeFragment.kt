@@ -20,10 +20,8 @@ import com.adrian.home.presentation.home.adapter.NowPlayingMoviesItemAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesItemAdapter
 import com.adrian.home.presentation.home.viewmodel.HomeViewModel
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
-@InternalCoroutinesApi
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding

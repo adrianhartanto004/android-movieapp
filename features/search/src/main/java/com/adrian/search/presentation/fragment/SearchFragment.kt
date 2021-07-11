@@ -7,7 +7,4 @@ import com.adrian.search.R
 
 class SearchFragment : BaseFragment(R.layout.fragment_search) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 }
