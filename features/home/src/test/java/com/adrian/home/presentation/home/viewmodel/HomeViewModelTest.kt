@@ -114,7 +114,7 @@ internal class HomeViewModelTest : BaseTest() {
         sut.getNowPlayingMovies(1)
         //then
         assertEquals(
-            sut.nowPlayingMoviesLiveData.value,
+            sut.nowPlayingMoviesState.value,
             UIState.Success(TestData.nowPlayingMoviesListData)
         )
     }
@@ -130,7 +130,7 @@ internal class HomeViewModelTest : BaseTest() {
         sut.getNowPlayingMovies(1)
         //then
         assertEquals(
-            sut.nowPlayingMoviesLiveData.value,
+            sut.nowPlayingMoviesState.value,
             UIState.Failure(
                 ErrorStatus.APPLICATION_ERROR,
                 applicationMock.getString(R.string.default_application_error)
@@ -148,7 +148,7 @@ internal class HomeViewModelTest : BaseTest() {
         //when
         sut.getGenres()
         //then
-        assertEquals(sut.genresLiveData.value, UIState.Success(TestData.genresListData))
+        assertEquals(sut.genresState.value, UIState.Success(TestData.genresListData))
     }
 
     @Test
@@ -162,7 +162,7 @@ internal class HomeViewModelTest : BaseTest() {
         sut.getGenres()
         //then
         assertEquals(
-            sut.genresLiveData.value,
+            sut.genresState.value,
             UIState.Failure(
                 ErrorStatus.APPLICATION_ERROR,
                 applicationMock.getString(R.string.default_application_error)

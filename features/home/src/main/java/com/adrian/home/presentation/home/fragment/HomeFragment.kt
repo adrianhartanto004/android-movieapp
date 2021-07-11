@@ -5,27 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.adrian.abstraction.common.state.UIState
 import com.adrian.abstraction.common.state.onFailure
 import com.adrian.abstraction.common.state.onSuccess
-import com.adrian.abstraction.extension.observe
 import com.adrian.abstraction.extension.showLongToast
 import com.adrian.abstraction.presentation.fragment.BaseFragment
 import com.adrian.home.R
 import com.adrian.home.databinding.FragmentHomeBinding
-import com.adrian.home.domain.model.genre.Genre
-import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
-import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.presentation.home.adapter.NowPlayingMoviesAdapter
 import com.adrian.home.presentation.home.adapter.NowPlayingMoviesItemAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesAdapter
 import com.adrian.home.presentation.home.adapter.PopularMoviesItemAdapter
 import com.adrian.home.presentation.home.viewmodel.HomeViewModel
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
+@InternalCoroutinesApi
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
@@ -38,29 +36,35 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private lateinit var nowPlayingMoviesItemAdapter: NowPlayingMoviesItemAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
-    private val popularMoviesObserver = Observer<UIState<List<PopularMovies>>> { state ->
-        state onSuccess {
-            popularMoviesItemAdapter.submitList(data ?: listOf())
-        }
-        state onFailure {
-            showLongToast(message)
-        }
-    }
-
-    private val nowPlayingMoviesObserver = Observer<UIState<List<NowPlayingMovies>>> { state ->
-        state onSuccess {
-            nowPlayingMoviesItemAdapter.submitList(data ?: listOf())
-        }
-        state onFailure {
-            showLongToast(message)
+    private fun observePopularMovies() = lifecycleScope.launchWhenStarted {
+        viewModel.popularMoviesState.collect { state ->
+            state onSuccess {
+                popularMoviesItemAdapter.submitList(data ?: listOf())
+            }
+            state onFailure {
+                showLongToast(message)
+            }
         }
     }
 
-    private val genresObserver = Observer<UIState<List<Genre>>> { state ->
-        state onSuccess {
-            nowPlayingMoviesItemAdapter.setGenres(data ?: listOf())
+    private fun observeNowPlayingMovies() = lifecycleScope.launchWhenStarted {
+        viewModel.nowPlayingMoviesState.collect { state ->
+            state onSuccess {
+                nowPlayingMoviesItemAdapter.submitList(data ?: listOf())
+            }
+            state onFailure {
+                showLongToast(message)
+            }
         }
-        state onFailure {
+    }
+
+    private fun observeGenres() = lifecycleScope.launchWhenStarted {
+        viewModel.genresState.collect { state ->
+            state onSuccess {
+                nowPlayingMoviesItemAdapter.setGenres(data ?: listOf())
+            }
+            state onFailure {
+            }
         }
     }
 
@@ -103,9 +107,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             adapter = concatAdapter
         }
 
-        observe(viewModel.popularMoviesLiveData, popularMoviesObserver)
-        observe(viewModel.nowPlayingMoviesLiveData, nowPlayingMoviesObserver)
-        observe(viewModel.genresLiveData, genresObserver)
+        observePopularMovies()
+        observeNowPlayingMovies()
+        observeGenres()
 
         popularMoviesAdapter.setOnShowMoreClickListener {
             val navDirections = HomeFragmentDirections.actionPopularMoviesShowAll()
