@@ -53,7 +53,6 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.5.0'
     implementation rootProject.ext.supportLibDependencies.appCompact
     implementation rootProject.ext.supportLibDependencies.activityktx
@@ -63,7 +62,6 @@ dependencies {
 
     implementation rootProject.ext.daggerHiltDependencies.daggerHiltAndroid
     kapt rootProject.ext.daggerHiltDependencies.daggerHiltAndroidCompiler
-    implementation rootProject.ext.daggerHiltDependencies.daggerHiltViewModel
     kapt rootProject.ext.daggerHiltDependencies.daggerHiltCompiler
 
     implementation rootProject.ext.navigationComponents.navigationFragment
