@@ -1,13 +1,10 @@
 package com.adrian.home.presentation.home.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.adrian.abstraction.common.network.enum.ErrorStatus
 import com.adrian.abstraction.common.state.UIState
-import com.adrian.abstraction.common.state.onError
-import com.adrian.abstraction.common.state.onSuccess
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
 import com.adrian.home.domain.model.genre.Genre
@@ -17,6 +14,9 @@ import com.adrian.home.domain.usecase.GetGenresUseCase
 import com.adrian.home.domain.usecase.GetNowPlayingMoviesUseCase
 import com.adrian.home.domain.usecase.GetPopularMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,62 +29,57 @@ class HomeViewModel @Inject constructor(
     private val getGenresUseCase: GetGenresUseCase
 ) : BaseViewModel(savedStateHandle) {
 
-    val popularMoviesLiveData: MutableLiveData<UIState<List<PopularMovies>>> = MutableLiveData()
-    val nowPlayingMoviesLiveData: MutableLiveData<UIState<List<NowPlayingMovies>>> =
-        MutableLiveData()
-    val genresLiveData: MutableLiveData<UIState<List<Genre>>> = MutableLiveData()
+    val popularMoviesState: MutableStateFlow<UIState<List<PopularMovies>>> =
+        MutableStateFlow(UIState.Loading)
+    val nowPlayingMoviesState: MutableStateFlow<UIState<List<NowPlayingMovies>>> =
+        MutableStateFlow(UIState.Loading)
+    val genresState: MutableStateFlow<UIState<List<Genre>>> = MutableStateFlow(UIState.Loading)
 
     fun getPopularMovies(page: Int) {
         viewModelScope.launch {
-            getPopularMoviesUseCase.getPopularMovies(page).also { resultState ->
-                popularMoviesLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    popularMoviesLiveData.value = UIState.Success(data?.results)
-                }
-                resultState onError {
-                    popularMoviesLiveData.value =
+            getPopularMoviesUseCase.getPopularMovies(page)
+                .catch {
+                    popularMoviesState.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
                         )
                 }
-            }
+                .collect {
+                    popularMoviesState.value = UIState.Success(it.results)
+                }
         }
     }
 
     fun getNowPlayingMovies(page: Int) {
         viewModelScope.launch {
-            getNowPlayingMoviesUseCase.getNowPlayingMovies(page).also { resultState ->
-                nowPlayingMoviesLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    nowPlayingMoviesLiveData.value = UIState.Success(data?.results)
-                }
-                resultState onError {
-                    nowPlayingMoviesLiveData.value =
+            getNowPlayingMoviesUseCase.getNowPlayingMovies(page)
+                .catch {
+                    nowPlayingMoviesState.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
                         )
                 }
-            }
+                .collect {
+                    nowPlayingMoviesState.value = UIState.Success(it.results)
+                }
         }
     }
 
     fun getGenres() {
         viewModelScope.launch {
-            getGenresUseCase.getGenres().also { resultState ->
-                genresLiveData.value = UIState.Loading
-                resultState onSuccess {
-                    genresLiveData.value = UIState.Success(data)
-                }
-                resultState onError {
-                    genresLiveData.value =
+            getGenresUseCase.getGenres()
+                .catch {
+                    genresState.value =
                         UIState.Failure(
                             ErrorStatus.APPLICATION_ERROR,
                             application.getString(R.string.default_application_error)
                         )
                 }
-            }
+                .collect {
+                    genresState.value = UIState.Success(it)
+                }
         }
     }
 

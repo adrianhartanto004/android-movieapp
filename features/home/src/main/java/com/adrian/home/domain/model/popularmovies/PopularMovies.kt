@@ -2,7 +2,7 @@ package com.adrian.home.domain.model.popularmovies
 
 data class PopularMovies(
     val adult: Boolean,
-    val backdropPath: String,
+//    val backdropPath: String,
     val id: Int,
     val originalLanguage: String,
     val originalTitle: String,

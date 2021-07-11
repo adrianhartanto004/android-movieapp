@@ -27,6 +27,8 @@ import com.adrian.home.domain.model.popularmovies.PopularMoviesList
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMoviesList
 import com.adrian.home.domain.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
@@ -35,60 +37,56 @@ class HomeRepositoryImpl(
     private val homeDao: HomeDao,
     private val sharedDao: SharedDao
 ) : HomeRepository {
-    override suspend fun getPopularMovies(page: Int): PopularMoviesList {
-        try {
-            return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getPopularMovies(page) }) {
+    override fun getPopularMovies(page: Int): Flow<PopularMoviesList> {
+        return flow {
+            val response =
+                safeApiCall(Dispatchers.IO) { homeRetrofitService.getPopularMovies(page) }
+            when (response) {
                 is ApiResult.Success -> {
                     val popularMovies = response.value
                     popularMovies.results
                         .map { it.toEntity() }
                         .let { homeDao.addPopularMovies(it) }
-
-                    popularMovies.toDomainModel()
+                    emit(popularMovies.toDomainModel())
                 }
                 is ApiResult.GenericError -> {
-                    return homeDao.getAllPopularMovies().toDomainModel()
+                    emit(homeDao.getAllPopularMovies().toDomainModel())
                 }
                 is ApiResult.NetworkError -> {
-                    return homeDao.getAllPopularMovies().toDomainModel()
+                    emit(homeDao.getAllPopularMovies().toDomainModel())
                 }
             }
-        } catch (e: IOException) {
-            return homeDao.getAllPopularMovies().toDomainModel()
         }
     }
 
-    override suspend fun getNowPlayingMovies(page: Int): NowPlayingMoviesList {
-        try {
-            return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getNowPlayingMovies(page) }) {
+    override fun getNowPlayingMovies(page: Int): Flow<NowPlayingMoviesList> {
+        return flow {
+            val response =
+                safeApiCall(Dispatchers.IO) { homeRetrofitService.getNowPlayingMovies(page) }
+            when (response) {
                 is ApiResult.Success -> {
                     val nowPlayingMovies = response.value
                     nowPlayingMovies.results
                         .map { it.toEntity() }
                         .let { homeDao.addNowPlayingMovies(it) }
-
-                    nowPlayingMovies.toDomainModel()
+                    emit(nowPlayingMovies.toDomainModel())
                 }
                 is ApiResult.GenericError -> {
-                    return homeDao.getAllNowPlayingMovies().toDomainModel()
+                    emit(homeDao.getAllNowPlayingMovies().toDomainModel())
                 }
                 is ApiResult.NetworkError -> {
-                    return homeDao.getAllNowPlayingMovies().toDomainModel()
+                    emit(homeDao.getAllNowPlayingMovies().toDomainModel())
                 }
             }
-        } catch (e: IOException) {
-            return homeDao.getAllNowPlayingMovies().toDomainModel()
         }
     }
 
-    override suspend fun getGenres(): List<Genre> {
-        try {
+    override fun getGenres(): Flow<List<Genre>> {
+        return flow {
             if (homeDao.getAllGenres().isNotEmpty()) {
-                return homeDao.getAllGenres().map { it.toDomainModel() }
+                emit(homeDao.getAllGenres().map { it.toDomainModel() })
             } else {
-                return when (
+                when (
                     val response =
                         safeApiCall(Dispatchers.IO) { homeRetrofitService.getGenres() }) {
                     is ApiResult.Success -> {
@@ -97,18 +95,16 @@ class HomeRepositoryImpl(
                             .map { it.toEntity() }
                             .let { homeDao.addGenres(it) }
 
-                        genres.map { it.toDomainModel() }
+                        emit(genres.map { it.toDomainModel() })
                     }
                     is ApiResult.GenericError -> {
-                        return homeDao.getAllGenres().map { it.toDomainModel() }
+                        emit(homeDao.getAllGenres().map { it.toDomainModel() })
                     }
                     is ApiResult.NetworkError -> {
-                        return homeDao.getAllGenres().map { it.toDomainModel() }
+                        emit(homeDao.getAllGenres().map { it.toDomainModel() })
                     }
                 }
             }
-        } catch (e: IOException) {
-            return homeDao.getAllGenres().map { it.toDomainModel() }
         }
     }
 
@@ -172,7 +168,12 @@ class HomeRepositoryImpl(
     override suspend fun getRecommendedMovies(movieId: Int, page: Int): RecommendedMoviesList? {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getRecommendedMovies(movieId, page) }) {
+                safeApiCall(Dispatchers.IO) {
+                    homeRetrofitService.getRecommendedMovies(
+                        movieId,
+                        page
+                    )
+                }) {
                 is ApiResult.Success -> {
                     response.value.toDomainModel()
                 }
@@ -191,7 +192,12 @@ class HomeRepositoryImpl(
     override suspend fun getAuthorReviews(movieId: Int, page: Int): AuthorReviewListJson? {
         try {
             return when (val response =
-                safeApiCall(Dispatchers.IO) { homeRetrofitService.getAuthorReviews(movieId, page) }) {
+                safeApiCall(Dispatchers.IO) {
+                    homeRetrofitService.getAuthorReviews(
+                        movieId,
+                        page
+                    )
+                }) {
                 is ApiResult.Success -> {
                     response.value
                 }

@@ -9,11 +9,12 @@ import com.adrian.home.domain.model.genre.Genre
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 import com.adrian.home.domain.model.popularmovies.PopularMoviesList
 import com.adrian.home.domain.model.recommendedmovies.RecommendedMoviesList
+import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    suspend fun getPopularMovies(page: Int): PopularMoviesList
-    suspend fun getNowPlayingMovies(page: Int): NowPlayingMoviesList
-    suspend fun getGenres(): List<Genre>
+    fun getPopularMovies(page: Int): Flow<PopularMoviesList>
+    fun getNowPlayingMovies(page: Int): Flow<NowPlayingMoviesList>
+    fun getGenres(): Flow<List<Genre>>
     suspend fun getMovieDetail(movieId: Int): MovieDetailResponseJson?
     suspend fun getMovieCredits(movieId: Int): MovieCreditListJson?
     suspend fun getMoviePhotos(movieId: Int): MoviesPhotoListJson?
