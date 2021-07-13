@@ -13,6 +13,8 @@
     * Navigation Components
     * LiveData
     * ViewModel
+    * Flow
+    * StateFlow
     * Room Persistance Library
     * Clean + MVVM Architecture
     * Single Activity Architecture
