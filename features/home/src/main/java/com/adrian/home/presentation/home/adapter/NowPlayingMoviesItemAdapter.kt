@@ -15,6 +15,8 @@ internal class NowPlayingMoviesItemAdapter :
 
     private var genres = listOf<Genre>()
 
+    private var onClickListener: ((nowPlayingMovies: NowPlayingMovies) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val holder = ViewHolder(
             HolderNowPlayingMoviesItemBinding.inflate(
@@ -42,6 +44,7 @@ internal class NowPlayingMoviesItemAdapter :
                 }
             }
             tvGenre.text = genreNames.joinToString(", ")
+            holder.itemView.setOnClickListener { onClickListener?.invoke(currentList) }
         }
     }
 
@@ -53,6 +56,10 @@ internal class NowPlayingMoviesItemAdapter :
     fun setGenres(genres: List<Genre>) {
         this.genres = genres
         notifyDataSetChanged()
+    }
+
+    fun setOnItemClickedListener(listener: (nowPlayingMovies: NowPlayingMovies) -> Unit) {
+        this.onClickListener = listener
     }
 
     internal inner class ViewHolder(val binding: HolderNowPlayingMoviesItemBinding) :
