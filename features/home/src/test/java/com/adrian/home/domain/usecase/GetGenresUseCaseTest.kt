@@ -1,6 +1,5 @@
 package com.adrian.home.domain.usecase
 
-import com.adrian.abstraction.common.state.UseCaseResult
 import com.adrian.home.domain.TestData
 import com.adrian.home.domain.repository.HomeRepository
 import com.adrian.test_util.BaseTest
@@ -11,7 +10,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.IOException
 
 @ExperimentalCoroutinesApi
 internal class GetGenresUseCaseTest : BaseTest() {
@@ -35,11 +33,11 @@ internal class GetGenresUseCaseTest : BaseTest() {
     @Test
     fun `success nowPlayingMoviesListData returned`() {
         // given
-        coEvery { repositoryMock.getGenres() } returns TestData.genresListData
+        coEvery { repositoryMock.getGenres() } returns TestData.genresListFlowData
         // when
         val result = runBlocking { sut.getGenres() }
         // then
-        assertEquals(result, TestData.genresListData)
+        assertEquals(result, TestData.genresListFlowData)
     }
 
     // region helper methods---------------------------------------------

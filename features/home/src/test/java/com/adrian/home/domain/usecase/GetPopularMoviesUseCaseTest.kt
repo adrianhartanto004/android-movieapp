@@ -39,18 +39,7 @@ internal class GetPopularMoviesUseCaseTest : BaseTest() {
         // when
         val result = runBlocking { sut.getPopularMovies(1) }
         // then
-        assertEquals(result, UseCaseResult.Success(TestData.popularMoviesList))
-    }
-
-    @Test
-    fun `repository throws an exception resultErrorReturned`() {
-        // given
-        val exception = IOException()
-        coEvery { repositoryMock.getPopularMovies(1) } throws exception
-        // when
-        val result = runBlocking { sut.getPopularMovies(1) }
-        // then
-        assertEquals(result, UseCaseResult.Error(exception))
+        assertEquals(result, TestData.popularMoviesList)
     }
 
     // region helper methods---------------------------------------------

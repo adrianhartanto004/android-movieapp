@@ -11,14 +11,12 @@ import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMovies
 import com.adrian.home.domain.model.nowplayingmovies.NowPlayingMoviesList
 import com.adrian.home.domain.model.popularmovies.PopularMovies
 import com.adrian.home.domain.model.popularmovies.PopularMoviesList
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 internal object TestData {
     val popularMoviesListData = listOf(
         PopularMovies(
             false,
-            "imageUrl",
             1,
             "en",
             "Avengers",
@@ -33,7 +31,6 @@ internal object TestData {
         ),
         PopularMovies(
             false,
-            "imageUrl",
             2,
             "en",
             "Avengers",
@@ -51,7 +48,6 @@ internal object TestData {
     val popularMoviesListDataJson = listOf(
         PopularMoviesJson(
             false,
-            "imageUrl",
             1,
             "en",
             "Avengers",
@@ -66,7 +62,6 @@ internal object TestData {
         ),
         PopularMoviesJson(
             false,
-            "imageUrl",
             1,
             "en",
             "Avengers",
@@ -80,14 +75,18 @@ internal object TestData {
             1300
         )
     )
-    val popularMoviesList = PopularMoviesList(1, popularMoviesListData, 1, 2)
+    val popularMoviesList = flow {
+        emit(
+            PopularMoviesList(1, popularMoviesListData, 1, 2)
+        )
+    }
+
     val popularMovieListJson = PopularMovieListJson(1, popularMoviesListDataJson, 1, 2)
 
     val genreIds = listOf(27, 30, 50)
     val nowPlayingMoviesListData = listOf(
         NowPlayingMovies(
             false,
-            "imageUrl",
             genreIds,
             3,
             "en",
@@ -103,7 +102,6 @@ internal object TestData {
         ),
         NowPlayingMovies(
             false,
-            "imageUrl",
             genreIds,
             3,
             "en",
@@ -121,7 +119,6 @@ internal object TestData {
     val nowPlayingMoviesListDataJson = listOf(
         NowPlayingMoviesJson(
             false,
-            "imageUrl",
             genreIds,
             3,
             "en",
@@ -137,7 +134,6 @@ internal object TestData {
         ),
         NowPlayingMoviesJson(
             false,
-            "imageUrl",
             genreIds,
             3,
             "en",
@@ -153,10 +149,14 @@ internal object TestData {
         )
     )
 
-    val nowPlayingMoviesList = NowPlayingMoviesList(1, nowPlayingMoviesListData, 1, 2)
+    val nowPlayingMoviesList = flow {
+        emit(
+            NowPlayingMoviesList(1, nowPlayingMoviesListData, 1, 2)
+        )
+    }
     val nowPlayingMoviesListJson = NowPlayingMoviesListJson(1, nowPlayingMoviesListDataJson, 1, 2)
 
-    val genresListData: Flow<List<Genre>> = flow {
+    val genresListFlowData = flow {
         emit(
             listOf(
                 Genre(1, "Horror"),
@@ -165,6 +165,13 @@ internal object TestData {
             )
         )
     }
+
+    val genresListData =
+        listOf(
+            Genre(1, "Horror"),
+            Genre(2, "Action"),
+            Genre(3, "Comedy")
+        )
 
     val genreListJson = listOf(
         GenreJson(1, "Horror"),
