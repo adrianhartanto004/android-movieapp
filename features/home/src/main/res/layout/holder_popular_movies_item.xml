@@ -24,7 +24,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:minLines="2"
-        android:text="Avengers: Infinity War"
+        tools:text="Avengers: Infinity War"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/iv_poster"
         app:layout_constraintStart_toStartOf="@+id/iv_poster"
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="9.3"
+        tools:text="9.3"
         app:layout_constraintBottom_toBottomOf="@+id/iv_star"
         app:layout_constraintStart_toEndOf="@+id/iv_star"
         app:layout_constraintTop_toTopOf="@+id/iv_star" />

@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="movie_detail_toolbar_title">Movie Detail</string>
+    <string name="popular_movies_toolbar_title">More Popular Movies</string>
+    <string name="movie_detail_cast_title">CAST</string>
+    <string name="movie_detail_photo_title">PHOTO</string>
+    <string name="movie_detail_recommendation_title">RECOMMENDED</string>
+    <string name="movie_detail_reviews_title">REVIEWS</string>
+    <string name="movie_detail_storyline_title">OVERVIEW</string>
+    <string name="now_playing_movies_title">NEW</string>
+    <string name="most_popular_movies_title">MOST POPULAR MOVIES</string>
+    <string name="most_popular_movies_show_more_text">Show all</string>
+    <string name="movie_detail_menu_favourite_item">Insert to Favourite</string>
 </resources>
