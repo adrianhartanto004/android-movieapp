@@ -6,8 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.adrian.abstraction.common.network.enum.ErrorStatus
 import com.adrian.abstraction.common.state.UIState
-import com.adrian.abstraction.common.state.onError
-import com.adrian.abstraction.common.state.onSuccess
 import com.adrian.abstraction.presentation.viewmodel.BaseViewModel
 import com.adrian.home.R
 import com.adrian.home.domain.model.popularmovies.PopularMovies

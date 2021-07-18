@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_like_movie"
         android:icon="@drawable/ic_favourite_border_red"
-        android:title="Insert to Favourite"
+        android:title="@string/movie_detail_menu_favourite_item"
         app:showAsAction="always" />
 
 </menu>
