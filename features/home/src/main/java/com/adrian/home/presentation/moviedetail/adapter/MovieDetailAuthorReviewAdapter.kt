@@ -3,6 +3,7 @@ package com.adrian.home.presentation.moviedetail.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.adrian.home.R
 import com.adrian.home.data.network.model.authorreview.AuthorReviewListJson
 import com.adrian.home.databinding.HolderMovieDetailReviewBinding
 
@@ -27,7 +28,12 @@ internal class MovieDetailAuthorReviewAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            tvReviewCount.text = "${authorReview?.totalResults} reviews"
+            val reviewCountText = "${authorReview?.totalResults} ${
+                tvReviewCount.context.getString(
+                    R.string.movie_detail_author_review_text
+                )
+            }"
+            tvReviewCount.text = reviewCountText
         }
     }
 

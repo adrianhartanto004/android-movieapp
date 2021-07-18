@@ -11,4 +11,12 @@
     <string name="most_popular_movies_title">MOST POPULAR MOVIES</string>
     <string name="most_popular_movies_show_more_text">Show all</string>
     <string name="movie_detail_menu_favourite_item">Insert to Favourite</string>
+    <string name="movie_detail_author_review_text">reviews</string>
+    <string name="movie_detail_storyline_release_date">Release date:</string>
+    <string name="movie_detail_storyline_original_language">Original language:</string>
+    <string name="movie_detail_storyline_production_company">Production company:</string>
+    <string name="movie_detail_storyline_production_countries">Production countries:</string>
+    <string name="movie_detail_storyline_budget_unknown">Budget: unknown</string>
+    <string name="movie_detail_storyline_budget">Budget: $</string>
+    <string name="movie_detail_storyline_revenue">Revenue: $</string>
 </resources>

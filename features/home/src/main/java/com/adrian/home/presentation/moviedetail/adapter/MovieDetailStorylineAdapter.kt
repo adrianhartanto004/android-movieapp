@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.adrian.abstraction.extension.loadImageUrl
+import com.adrian.home.R
 import com.adrian.home.data.network.model.moviedetail.MovieDetailResponseJson
 import com.adrian.home.databinding.HolderMovieDetailStorylineBinding
 import com.google.android.flexbox.*
@@ -29,23 +30,49 @@ internal class MovieDetailStorylineAdapter(private val movieDetailGenreAdapter: 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentList = movieDetailResponseJson
+        val context = holder.itemView.context
         holder.binding.apply {
             ivPoster.loadImageUrl(currentList.posterPath)
             tvTitle.text = currentList.title
             tvRating.text = currentList.voteAverage.toString()
-            tvVoteCount.text = "(${currentList.voteCount.toString()})"
-            tvReleaseDate.text = "Release date: ${currentList.releaseDate}"
-            tvMovieLanguage.text = "Original language: ${currentList.originalLanguage}"
-            tvProductionCompany.text =
-                "Production company: ${currentList.productionCompanies?.map { it.name }?.joinToString(", ")}"
-            tvProductionCountries.text =
-                "Production countries: ${currentList.productionCountries?.map { it.name }?.joinToString(", ")}"
-            if(currentList.budget == 0){
-                tvBudget.text = "Budget: unknown"
-            } else{
-                tvBudget.text = "Budget: $${currentList.budget.toString()}"
+
+            val tvVoteCountText = "(${currentList.voteCount.toString()})"
+            tvVoteCount.text = tvVoteCountText
+
+            val releaseDateText =
+                "${context.getString(R.string.movie_detail_storyline_release_date)} ${currentList.releaseDate}"
+            tvReleaseDate.text = releaseDateText
+
+            val originalLanguageText =
+                "${context.getString(R.string.movie_detail_storyline_original_language)} ${currentList.originalLanguage}"
+            tvMovieLanguage.text = originalLanguageText
+
+            val productionCompanyText =
+                "${context.getString(R.string.movie_detail_storyline_production_company)} ${
+                    currentList.productionCompanies?.map { it.name }?.joinToString(", ")
+                }"
+            tvProductionCompany.text = productionCompanyText
+
+            val productionCountriesText =
+                "${context.getString(R.string.movie_detail_storyline_production_countries)} ${
+                    currentList.productionCountries?.map { it.name }?.joinToString(", ")
+                }"
+            tvProductionCountries.text = productionCountriesText
+
+            if (currentList.budget == 0) {
+                val emptyBudgetText =
+                    context.getString(R.string.movie_detail_storyline_budget_unknown)
+                tvBudget.text = emptyBudgetText
+            } else {
+                val budgetText =
+                    "${context.getString(R.string.movie_detail_storyline_budget)}${currentList.budget.toString()}"
+                tvBudget.text = budgetText
             }
-            tvRevenue.text = "Revenue: $${currentList.revenue.toString()}"
+
+            val revenueText =
+                "${context.getString(R.string.movie_detail_storyline_revenue)}${currentList.revenue.toString()}"
+            tvRevenue.text = revenueText
+
             tvOverviewDesc.text = currentList.overview
 
             rvGenre.apply {
