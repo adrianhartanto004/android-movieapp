@@ -39,18 +39,7 @@ internal class GetNowPlayingMoviesUseCaseTest : BaseTest() {
         // when
         val result = runBlocking { sut.getNowPlayingMovies(1) }
         // then
-        assertEquals(result, UseCaseResult.Success(TestData.nowPlayingMoviesList))
-    }
-
-    @Test
-    fun `repository throws an exception resultErrorReturned`() {
-        // given
-        val exception = IOException()
-        coEvery { repositoryMock.getNowPlayingMovies(1) } throws exception
-        // when
-        val result = runBlocking { sut.getNowPlayingMovies(1) }
-        // then
-        assertEquals(result, UseCaseResult.Error(exception))
+        assertEquals(result, TestData.nowPlayingMoviesList)
     }
 
     // region helper methods---------------------------------------------

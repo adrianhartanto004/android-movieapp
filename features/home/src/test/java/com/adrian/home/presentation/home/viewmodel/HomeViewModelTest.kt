@@ -16,6 +16,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.IOException
@@ -72,30 +73,25 @@ internal class HomeViewModelTest : BaseTest() {
     @Test
     fun `fetch popularMovies popularMoviesListData returned`() {
         //given
-        coEvery { getPopularMoviesUseCaseMock.getPopularMovies(1) } returns UseCaseResult.Success(
-            TestData.popularMoviesList
-        )
+        coEvery { getPopularMoviesUseCaseMock.getPopularMovies(1) } returns TestData.popularMoviesList
         //when
         sut.getPopularMovies(1)
         //then
         assertEquals(
-            sut.popularMoviesLiveData.value,
+            sut.popularMoviesState.value,
             UIState.Success(TestData.popularMoviesListData)
         )
     }
 
     @Test
-    fun `fetch popularMovies useCase exceptionError applicationErrorReturned`() {
+    fun `fetch popularMovies useCase error applicationErrorReturned`() {
         //given
-        val exception = IOException()
-        coEvery { getPopularMoviesUseCaseMock.getPopularMovies(1) } returns UseCaseResult.Error(
-            exception
-        )
+        coEvery { getPopularMoviesUseCaseMock.getPopularMovies(1) } returns flow { error("") }
         //when
         sut.getPopularMovies(1)
         //then
         assertEquals(
-            sut.popularMoviesLiveData.value,
+            sut.popularMoviesState.value,
             UIState.Failure(
                 ErrorStatus.APPLICATION_ERROR,
                 applicationMock.getString(R.string.default_application_error)
@@ -107,9 +103,7 @@ internal class HomeViewModelTest : BaseTest() {
     @Test
     fun `fetch nowPlayingMovies nowPlayingMoviesListData returned`() {
         //given
-        coEvery { getNowPlayingMoviesUseCaseMock.getNowPlayingMovies(1) } returns UseCaseResult.Success(
-            TestData.nowPlayingMoviesList
-        )
+        coEvery { getNowPlayingMoviesUseCaseMock.getNowPlayingMovies(1) } returns TestData.nowPlayingMoviesList
         //when
         sut.getNowPlayingMovies(1)
         //then
@@ -120,12 +114,9 @@ internal class HomeViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `fetch nowPlayingMovies useCase exceptionError applicationErrorReturned`() {
+    fun `fetch nowPlayingMovies useCase error applicationErrorReturned`() {
         //given
-        val exception = IOException()
-        coEvery { getNowPlayingMoviesUseCaseMock.getNowPlayingMovies(1) } returns UseCaseResult.Error(
-            exception
-        )
+        coEvery { getNowPlayingMoviesUseCaseMock.getNowPlayingMovies(1) } returns flow { error("") }
         //when
         sut.getNowPlayingMovies(1)
         //then
@@ -142,9 +133,7 @@ internal class HomeViewModelTest : BaseTest() {
     @Test
     fun `fetch genres genresListData returned`() {
         //given
-        coEvery { getGenresUseCaseMock.getGenres() } returns UseCaseResult.Success(
-            TestData.genresListData
-        )
+        coEvery { getGenresUseCaseMock.getGenres() } returns TestData.genresListFlowData
         //when
         sut.getGenres()
         //then
@@ -152,12 +141,9 @@ internal class HomeViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `fetch genres useCase exceptionError applicationErrorReturned`() {
+    fun `fetch genres useCase error applicationErrorReturned`() {
         //given
-        val exception = IOException()
-        coEvery { getGenresUseCaseMock.getGenres() } returns UseCaseResult.Error(
-            exception
-        )
+        coEvery { getGenresUseCaseMock.getGenres() } returns flow { error("") }
         //when
         sut.getGenres()
         //then
