@@ -118,5 +118,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             val navDirections = HomeFragmentDirections.actionPopularMoviesToMovieDetail(it.id)
             findNavController().navigate(navDirections)
         }
+
+        nowPlayingMoviesItemAdapter.setOnItemClickedListener {
+            val navDirections = HomeFragmentDirections.actionPopularMoviesToMovieDetail(it.id)
+            findNavController().navigate(navDirections)
+        }
     }
 }
