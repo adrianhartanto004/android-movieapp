@@ -7,14 +7,14 @@ import com.adrian.abstraction.common.data.model.FavouriteMovieEntity
 interface SharedDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMovieToFavourite(favouriteMovieEntity: FavouriteMovieEntity)
+    fun addMovieToFavourite(favouriteMovieEntity: FavouriteMovieEntity)
 
     @Query("SELECT * FROM favouriteMovies")
-    suspend fun getAllFavouriteMovies(): List<FavouriteMovieEntity>
+    fun getAllFavouriteMovies(): List<FavouriteMovieEntity>
 
     @Delete
-    suspend fun deleteFavouriteMovie(favouriteMovieEntity: FavouriteMovieEntity)
+    fun deleteFavouriteMovie(favouriteMovieEntity: FavouriteMovieEntity)
 
     @Query("SELECT EXISTS(SELECT * FROM favouriteMovies WHERE id = :id)")
-    suspend fun isFavouriteMovieExist(id: Int): Boolean
+    fun isFavouriteMovieExist(id: Int): Boolean
 }

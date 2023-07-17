@@ -1,6 +1,5 @@
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'kotlinx-serialization'
 
@@ -11,8 +10,6 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
         buildConfigField "String", "BASE_URL", rootProject.ext.BASE_URL
         buildConfigField "String", "BASE_IMAGE_URL", rootProject.ext.BASE_IMAGE_URL
         buildConfigField "String", "API_KEY", rootProject.ext.API_KEY
@@ -29,14 +26,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         viewBinding true
+        buildConfig = true
     }
     kapt {
         generateStubs = true
@@ -45,7 +43,7 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation rootProject.ext.supportLibDependencies.appCompact
     implementation rootProject.ext.supportLibDependencies.activityktx
     implementation rootProject.ext.supportLibDependencies.fragmentktx

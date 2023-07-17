@@ -5,3 +5,6 @@ dependencies {
     implementation project(rootProject.ext.internalLibraries.abstraction)
     implementation project(rootProject.ext.internalLibraries.testUtil)
 }
+android {
+    namespace "com.adrian.favourites"
+}
