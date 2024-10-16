@@ -26,7 +26,7 @@ ext {
             cardView            : "androidx.cardview:cardview:${supportlibrary_version}",
             constraintLayout    : "androidx.constraintlayout:constraintlayout:2.0.4",
             preference          : "androidx.preference:preference:${supportlibrary_version}",
-            flexBox             : "com.google.android:flexbox:${supportlibrary_version}",
+            flexBox             : "com.google.android.flexbox:flexbox:3.0.0",
             swipeRefreshLayout  : "androidx.swiperefreshlayout:swiperefreshlayout:${supportlibrary_version}"
     ]
 
