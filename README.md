@@ -23,7 +23,11 @@
 * Unit Test
     * MockK
     * Junit5 (Android Junit5)
+ 
+# Notes
+* Use Gradle JDK 17
 
+# Screenshots
 
 <img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-1.PNG"><img src="https://github.com/adrianhartanto004/android-movieapp/blob/main/screenshot/movieapp-2.PNG">
 
