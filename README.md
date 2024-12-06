@@ -1,11 +1,10 @@
 # android-movieapp
-# For Ktor-Koin CIO Implementation
-* [Ktor-Koin Branch](https://github.com/adrianhartanto004/android-movieapp/tree/koin-ktor-implementation)
-   * Check out `KtorClientFactoryImpl.kt`, `HomeApi.kt`, and `di` package files
 # Master Branch Goals
 * Stack
     * Kotlin
     * Kotlin Coroutines
+    * Ktor
+    * Koin
     * Retrofit
     * Concat Adapter
     * Nested Recyclerview
@@ -26,6 +25,9 @@
  
 # Notes
 * Use Gradle JDK 17
+
+# For Ktor-Koin CIO Implementation
+* [DaggerHilt-Retrofit Branch](https://github.com/adrianhartanto004/android-movieapp/tree/hilt-retrofit-implementation)
 
 # Screenshots
 
