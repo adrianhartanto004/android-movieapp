@@ -26,8 +26,8 @@
 # Notes
 * Use Gradle JDK 17
 
-# For Ktor-Koin CIO Implementation
-* [DaggerHilt-Retrofit Branch](https://github.com/adrianhartanto004/android-movieapp/tree/hilt-retrofit-implementation)
+# For Dagger Hilt & Retrofit Implementation
+* [Dagger Hilt-Retrofit Branch](https://github.com/adrianhartanto004/android-movieapp/tree/hilt-retrofit-implementation)
 
 # Screenshots
 
